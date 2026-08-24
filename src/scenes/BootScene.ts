@@ -21,6 +21,7 @@ export class BootScene extends Phaser.Scene {
     this.load.image("pet-cat", "/assets/obstacles/pet-cat.png");
     this.load.image("pedestrian-1", "/assets/obstacles/pedestrian-1.png");
     this.load.image("pedestrian-2", "/assets/obstacles/pedestrian-2.png");
+    this.load.image("repair-part", "/assets/obstacles/repair-part.png");
     this.load.image("cockpit-frame", "/assets/cockpit/cockpit-frame.png");
     this.load.image("steering-wheel", "/assets/cockpit/steering-wheel.png");
 

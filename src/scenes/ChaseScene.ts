@@ -18,10 +18,12 @@ const KIND_BASE_SCALE: Record<ObstacleKind, number> = {
   pedestrian: 0.34,
   cone: 0.22,
   pet: 0.3,
-  part: 0.5,
+  // Real art (500px source) replaced the old procedural 64px texture —
+  // 0.064 keeps the same on-screen footprint the old 0.5*64px baseline had.
+  part: 0.064,
 };
 
-const PART_ICON_KEY = "repair-part-icon";
+const PART_ICON_KEY = "repair-part";
 
 interface ChaseData {
   carId: number;
@@ -159,7 +161,6 @@ export class ChaseScene extends Phaser.Scene {
     playMusic("chase");
     this.buildSky();
     this.buildParallax();
-    this.ensurePartTexture();
 
     this.roadGraphics = this.add.graphics();
     if (this.isNight) this.buildHeadlights();
@@ -390,26 +391,6 @@ export class ChaseScene extends Phaser.Scene {
   // obstacles already on screen too, not just future ones.
   private livesSpeedFactor(): number {
     return 1 + (GameConfig.livesMax - RunState.lives) * 0.12;
-  }
-
-  // A simple drawn wrench-on-a-disc icon, generated once and cached in the
-  // texture manager — avoids blocking this feature on a new AI-generated
-  // asset, same placeholder philosophy already used for the audio SFX.
-  private ensurePartTexture(): void {
-    if (this.textures.exists(PART_ICON_KEY)) return;
-    const size = 64;
-    const g = this.add.graphics();
-    g.fillStyle(0xffb454, 1);
-    g.fillCircle(size / 2, size / 2, size / 2 - 4);
-    g.lineStyle(3, 0x1c1f26, 1);
-    g.strokeCircle(size / 2, size / 2, size / 2 - 4);
-    g.lineStyle(6, 0x1c1f26, 1);
-    g.lineBetween(size * 0.3, size * 0.7, size * 0.7, size * 0.3);
-    g.fillStyle(0x1c1f26, 1);
-    g.fillCircle(size * 0.28, size * 0.72, 7);
-    g.fillCircle(size * 0.72, size * 0.28, 7);
-    g.generateTexture(PART_ICON_KEY, size, size);
-    g.destroy();
   }
 
   private buildDashboard(): void {
