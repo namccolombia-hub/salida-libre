@@ -9,6 +9,7 @@ import { showInterstitial } from "../ads/AdService.ts";
 import { pushProgress } from "../cloud/CloudSave.ts";
 import { loadHintsEnabled } from "../state/Persistence.ts";
 import { burst, confetti, showFloatingText } from "../fx/effects.ts";
+import { hapticImpact, hapticSuccess, hapticError } from "../fx/haptics.ts";
 import { goTo, fadeIn } from "../fx/sceneTransition.ts";
 import { createButton } from "../ui/Button.ts";
 import { showTutorialQueue } from "../ui/TutorialOverlay.ts";
@@ -576,6 +577,7 @@ export class ParkingScene extends Phaser.Scene {
     const by = this.cellCenterY(car) + (car.orientation === "v" ? car.dir * this.cellSize * travelCells : 0);
     const travelDuration = Phaser.Math.Clamp(90 + travelCells * 45, 90, 320);
     this.cameras.main.flash(150, 255, 71, 87);
+    this.cameras.main.shake(120, 0.006);
     this.tweens.add({
       targets: sprite,
       x: bx,
@@ -585,7 +587,21 @@ export class ParkingScene extends Phaser.Scene {
       ease: "Sine.easeIn",
       onYoyo: () => {
         playCrash();
+        hapticImpact();
         burst(this, bx, by, Palette.danger);
+        // Impact squash — compresses along the travel axis, bulges
+        // perpendicular, then springs back. Sells the hit beyond the
+        // flash/shake/particles alone.
+        const baseScaleX = sprite.scaleX;
+        const baseScaleY = sprite.scaleY;
+        this.tweens.add({
+          targets: sprite,
+          scaleX: baseScaleX * (car.orientation === "h" ? 0.8 : 1.15),
+          scaleY: baseScaleY * (car.orientation === "h" ? 1.15 : 0.8),
+          duration: 80,
+          yoyo: true,
+          ease: "Quad.easeOut",
+        });
       },
       onComplete: () => {
         // A mistake doesn't cost a life outright anymore — it's a chance to
@@ -605,6 +621,7 @@ export class ParkingScene extends Phaser.Scene {
     this.busy = true;
     this.resetIdle();
     playLevelComplete();
+    hapticSuccess();
     RunState.addScore(GameConfig.levelClearBonus);
     LevelState.unlockUpTo(LevelState.level + 1);
     void pushProgress();
@@ -763,6 +780,7 @@ export class ParkingScene extends Phaser.Scene {
 
     this.busy = true;
     playLoseLife();
+    hapticError();
     const gameOver = RunState.loseLife();
     this.refreshHud();
     if (gameOver) {
@@ -906,6 +924,7 @@ export class ParkingScene extends Phaser.Scene {
         this.busy = true;
         this.cameras.main.flash(150, 255, 71, 87);
         playLoseLife();
+        hapticError();
         const gameOver = RunState.loseLife();
         this.refreshHud();
         if (gameOver) {

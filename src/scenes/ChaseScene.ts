@@ -5,6 +5,7 @@ import { play as playMusic } from "../audio/music.ts";
 import { RunState } from "../state/RunState.ts";
 import { LevelState } from "../state/LevelState.ts";
 import { burst, confetti, showFloatingText } from "../fx/effects.ts";
+import { hapticImpact, hapticSuccess, hapticError } from "../fx/haptics.ts";
 import { goTo, fadeIn } from "../fx/sceneTransition.ts";
 import { showTutorialQueue } from "../ui/TutorialOverlay.ts";
 
@@ -715,6 +716,7 @@ export class ChaseScene extends Phaser.Scene {
     this.hits++;
     this.updateHitDots();
     playCrash();
+    hapticImpact();
 
     if (this.hits >= GameConfig.chaseMaxHits) {
       this.resolveChase(false);
@@ -739,10 +741,12 @@ export class ChaseScene extends Phaser.Scene {
         car.inChase = false;
       }
       LevelState.replenish();
+      hapticSuccess();
       this.cameras.main.flash(200, 79, 209, 255);
       this.time.delayedCall(220, () => goTo(this, "ParkingScene"));
     } else if (success) {
       playExit();
+      hapticSuccess();
       if (car) LevelState.removeCar(this.carId);
       LevelState.clearedCount++;
       RunState.addScore(GameConfig.chaseSuccessBonus);
@@ -753,6 +757,7 @@ export class ChaseScene extends Phaser.Scene {
     } else {
       if (car) car.inChase = false;
       playLoseLife();
+      hapticError();
       const gameOver = RunState.loseLife();
       this.cameras.main.flash(200, 255, 71, 87);
       this.time.delayedCall(220, () => {

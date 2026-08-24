@@ -5,6 +5,7 @@ import { LevelState } from "../state/LevelState.ts";
 import { createButton } from "../ui/Button.ts";
 import { goTo, fadeIn } from "../fx/sceneTransition.ts";
 import { playGameOver, playLevelComplete } from "../audio/sfx.ts";
+import { hapticSuccess, hapticError } from "../fx/haptics.ts";
 import { showRewardedAd } from "../ads/AdService.ts";
 import { Capacitor } from "@capacitor/core";
 
@@ -30,8 +31,10 @@ export class GameOverScene extends Phaser.Scene {
     const finished = this.reason === "finished";
     if (finished) {
       playLevelComplete();
+      hapticSuccess();
     } else {
       playGameOver();
+      hapticError();
     }
 
     this.add
