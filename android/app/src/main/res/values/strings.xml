@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Salida Libre</string>
+    <string name="title_activity_main">Salida Libre</string>
+    <string name="package_name">com.salidalibre.app</string>
+    <string name="custom_url_scheme">com.salidalibre.app</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Play Games Services v2 project id — get this from the Google Play Console
+  after configuring Play Games Services for this app (Grow > Play Games
+  Services > Setup and management > Configuration). Replace the placeholder
+  below with your real project id before publishing; cloud save / sign-in
+  won't work until you do.
+  See: https://developer.android.com/games/pgs
+-->
+<resources>
+    <string name="game_services_project_id" translatable="false">REPLACE_WITH_YOUR_PGS_PROJECT_ID</string>
+</resources>
