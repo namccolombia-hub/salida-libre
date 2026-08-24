@@ -413,11 +413,12 @@ export class ChaseScene extends Phaser.Scene {
   }
 
   private buildDashboard(): void {
-    // Regenerated art (2026) ships as a square 1024x1024 canvas, not sized
-    // to the game's portrait viewport like the original did — cover-fit by
-    // height so the mirror/dashboard still reach the top/bottom edges; the
-    // extra width simply falls outside the canvas, which is harmless.
-    this.add.image(GameConfig.width / 2, GameConfig.height / 2, "cockpit-frame").setDepth(15).setDisplaySize(GameConfig.height, GameConfig.height);
+    // Reverted to the original cockpit-frame art (sized to the game's exact
+    // portrait viewport, no scaling needed) — a regenerated version painted
+    // its own road/scenery inside the windshield opening instead of leaving
+    // it transparent, which blocked the real road/obstacles and broke
+    // dodging. See src/scenes/BootScene.ts for the asset path.
+    this.add.image(GameConfig.width / 2, GameConfig.height / 2, "cockpit-frame").setDepth(15);
 
     this.wheelContainer = this.add.container(GameConfig.width / 2, GameConfig.height - 24).setDepth(16);
     const wheel = this.add.image(0, 0, "steering-wheel").setDisplaySize(170, 170);
