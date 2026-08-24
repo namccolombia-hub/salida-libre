@@ -15,6 +15,9 @@ dist-ssr
 # Claude Code local tool state — not project source
 .claude/
 
+# Stray root-level screenshots from ad-hoc Playwright test scripts
+/*.png
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

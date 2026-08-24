@@ -5,19 +5,25 @@
 import { Capacitor } from "@capacitor/core";
 import { AdMob } from "@capacitor-community/admob";
 
-// Google's OFFICIAL PUBLIC TEST ad unit IDs — safe to ship during
-// development (they never serve real ads or generate revenue, and using
-// your own unapproved app's real IDs before review can get an AdMob account
-// flagged). Replace these with your own real ad unit IDs from your AdMob
-// account, and drop `isTesting: true` below, before publishing to a store.
-const REWARDED_AD_ID = Capacitor.getPlatform() === "ios" ? "ca-app-pub-3940256099942544/1712485313" : "ca-app-pub-3940256099942544/5224354917";
-const INTERSTITIAL_AD_ID = Capacitor.getPlatform() === "ios" ? "ca-app-pub-3940256099942544/4411468910" : "ca-app-pub-3940256099942544/1033173712";
+const isIOS = Capacitor.getPlatform() === "ios";
+
+// Android has a real AdMob app + ad units (Namc Colombia account) — live.
+// iOS doesn't have a registered AdMob app yet (no Mac to build/publish on
+// yet), so it stays on Google's OFFICIAL PUBLIC TEST ad unit IDs — safe to
+// ship, never serve real ads or generate revenue. Once iOS gets its own
+// AdMob app, swap this ternary's iOS branch for its real ad unit IDs and
+// it'll automatically stop being treated as a test (see IS_TESTING below).
+const REWARDED_AD_ID = isIOS ? "ca-app-pub-3940256099942544/1712485313" : "ca-app-pub-7661622406962970/3128325788";
+const INTERSTITIAL_AD_ID = isIOS ? "ca-app-pub-3940256099942544/4411468910" : "ca-app-pub-7661622406962970/4593501026";
+
+// Real ad units only actually serve real ads once isTesting is false.
+const IS_TESTING = isIOS;
 
 let initialized = false;
 
 async function prepareRewarded(): Promise<void> {
   try {
-    await AdMob.prepareRewardVideoAd({ adId: REWARDED_AD_ID, isTesting: true });
+    await AdMob.prepareRewardVideoAd({ adId: REWARDED_AD_ID, isTesting: IS_TESTING });
   } catch {
     // No fill / offline — showRewardedAd() below just won't reward anything.
   }
@@ -25,7 +31,7 @@ async function prepareRewarded(): Promise<void> {
 
 async function prepareInterstitial(): Promise<void> {
   try {
-    await AdMob.prepareInterstitial({ adId: INTERSTITIAL_AD_ID, isTesting: true });
+    await AdMob.prepareInterstitial({ adId: INTERSTITIAL_AD_ID, isTesting: IS_TESTING });
   } catch {
     // Same as above.
   }
@@ -35,7 +41,10 @@ async function prepareInterstitial(): Promise<void> {
 export async function initAds(): Promise<void> {
   if (!Capacitor.isNativePlatform() || initialized) return;
   initialized = true;
-  await AdMob.initialize({ initializeForTesting: true });
+  // Real ad requests are gated per-ad-unit by IS_TESTING above, not here —
+  // initializeForTesting only registers specific test device ids, which we
+  // don't need.
+  await AdMob.initialize();
   void prepareRewarded();
   void prepareInterstitial();
 }

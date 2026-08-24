@@ -39,6 +39,12 @@
         <meta-data
             android:name="com.google.android.gms.games.APP_ID"
             android:value="@string/game_services_project_id" />
+
+        <!-- AdMob Application ID — required by the SDK, app crashes on
+             launch without it once real (non-test) ads are used. -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7661622406962970~7067570791" />
     </application>
 
     <!-- Permissions -->
