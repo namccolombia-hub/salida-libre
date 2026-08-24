@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { CAR_COLOR_KEYS, GameConfig, startTheme } from "../config/palette.ts";
+import { CAR_COLOR_KEYS, GameConfig, startTheme, LANDMARK_KEYS } from "../config/palette.ts";
 import { initAds } from "../ads/AdService.ts";
 import { initCloudSave } from "../cloud/CloudSave.ts";
 import { drawVerticalGradient } from "../fx/gradient.ts";
@@ -23,6 +23,10 @@ export class BootScene extends Phaser.Scene {
     this.load.image("pedestrian-2", "/assets/obstacles/pedestrian-2.png");
     this.load.image("cockpit-frame", "/assets/cockpit/cockpit-frame.png");
     this.load.image("steering-wheel", "/assets/cockpit/steering-wheel.png");
+
+    LANDMARK_KEYS.forEach((key) => {
+      this.load.image(`landmark-${key}`, `/assets/landmarks/${key}.png`);
+    });
   }
 
   create(): void {

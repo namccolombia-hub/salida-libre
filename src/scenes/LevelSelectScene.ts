@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { CAR_COLOR_KEYS, GameConfig, Palette, isNightTheme } from "../config/palette.ts";
+import { CAR_COLOR_KEYS, GameConfig, Palette, isNightTheme, LANDMARKS } from "../config/palette.ts";
 import { RunState } from "../state/RunState.ts";
 import { LevelState, difficultyBadges } from "../state/LevelState.ts";
 import { goTo, fadeIn } from "../fx/sceneTransition.ts";
@@ -18,14 +18,6 @@ const ROAD_SURFACE = isNightTheme ? 0x5c5670 : 0x9aa0a8;
 const BUILDING_FILL = isNightTheme ? 0x1a1430 : 0xc7d3de;
 const BUILDING_WINDOW = isNightTheme ? 0xffd98a : 0x4a5568;
 const INK_COLOR = isNightTheme ? Palette.textLight : "#1c1f26";
-
-const LANDMARKS = [
-  { emoji: "🅿️", label: "Parqueadero" },
-  { emoji: "🏬", label: "Centro comercial" },
-  { emoji: "🎰", label: "Casino" },
-  { emoji: "⛽", label: "Gasolinera" },
-  { emoji: "🛒", label: "Supermercado" },
-] as const;
 
 type Positioned = Phaser.GameObjects.Image | Phaser.GameObjects.Text | Phaser.GameObjects.Graphics | Phaser.GameObjects.Arc;
 
@@ -255,26 +247,19 @@ export class LevelSelectScene extends Phaser.Scene {
 
     const items: Positioned[] = [];
 
-    const plate = this.add.graphics().setPosition(x, y).setDepth(1).setAlpha(0.95);
-    plate.fillStyle(Palette.bgAsphaltLight, 1);
-    plate.fillRoundedRect(-38, -30, 76, 60, 10);
-    plate.lineStyle(1.5, Palette.wallSolid, 1);
-    plate.strokeRoundedRect(-38, -30, 76, 60, 10);
-    items.push(plate);
-
-    const emoji = this.add
-      .text(x, y - 10, spot.emoji, { fontSize: "24px" })
-      .setOrigin(0.5)
-      .setDepth(1);
-    items.push(emoji);
+    // The generated art already ships its own card frame/background, so no
+    // Graphics plate is drawn here — just place it.
+    const icon = this.add.image(x, y - 6, `landmark-${spot.key}`).setDepth(1);
+    icon.setDisplaySize(84, 84);
+    items.push(icon);
 
     const label = this.add
-      .text(x, y + 16, spot.label, {
+      .text(x, y + 40, spot.label, {
         fontFamily: Palette.bodyFont,
         fontSize: "9px",
-        color: Palette.textLight,
+        color: INK_COLOR,
         align: "center",
-        wordWrap: { width: 70 },
+        wordWrap: { width: 90 },
       })
       .setOrigin(0.5)
       .setDepth(1);

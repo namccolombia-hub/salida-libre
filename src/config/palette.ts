@@ -32,6 +32,25 @@ export const CarColorHex: Record<CarColorKey, number> = {
   yellow: 0xffb454,
 };
 
+// Landmark buildings dotted along the level-select road — real generated
+// art (not emoji), each shipping its own baked-in card frame, so
+// LevelSelectScene just places the image without drawing a frame of its
+// own. Texture key is `landmark-${key}`, source file `public/assets/
+// landmarks/${key}.png`.
+export const LANDMARKS = [
+  { key: "parking-lot", label: "Parqueadero" },
+  { key: "mall", label: "Centro comercial" },
+  { key: "casino", label: "Casino" },
+  { key: "gas-station", label: "Gasolinera" },
+  { key: "supermarket", label: "Supermercado" },
+  { key: "hospital", label: "Hospital" },
+  { key: "police-station", label: "Estación de policía" },
+  { key: "park", label: "Parque" },
+  { key: "fast-food", label: "Comida rápida" },
+  { key: "car-wash", label: "Lavadero de autos" },
+] as const;
+export const LANDMARK_KEYS = LANDMARKS.map((l) => l.key);
+
 // Boot/menu backdrop gradients — bright and light by day (better contrast
 // against the colorful car silhouettes), warm and dark by night, matching
 // the day/night split already used in-game (ParkingScene/ChaseScene check
