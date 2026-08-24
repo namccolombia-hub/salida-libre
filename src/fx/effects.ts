@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { Palette } from "../config/palette.ts";
 
 const SPARK_KEY = "fx-spark";
 
@@ -52,7 +53,8 @@ export function confetti(scene: Phaser.Scene, x: number, y: number): void {
 export function showFloatingText(scene: Phaser.Scene, x: number, y: number, text: string, color: string): void {
   const label = scene.add
     .text(x, y, text, {
-      fontFamily: "Arial Black, Arial",
+      fontFamily: Palette.bodyFontBold,
+      fontStyle: "700",
       fontSize: "18px",
       color,
       stroke: "#1c1f26",

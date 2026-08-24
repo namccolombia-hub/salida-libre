@@ -75,7 +75,7 @@ export class GridPreviewScene extends Phaser.Scene {
     if (this.level > 1) {
       const prevBtn = this.add
         .text(20, 50, "‹ ANTERIOR", {
-          fontFamily: "Arial",
+          fontFamily: Palette.bodyFont,
           fontSize: "14px",
           color: Palette.textLight,
         })
@@ -86,7 +86,7 @@ export class GridPreviewScene extends Phaser.Scene {
 
     const regen = this.add
       .text(GameConfig.width - 20, 50, "🔀 Otra distribución", {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "14px",
         color: Palette.textLight,
       })

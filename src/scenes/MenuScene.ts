@@ -39,7 +39,7 @@ export class MenuScene extends Phaser.Scene {
 
     this.add
       .text(GameConfig.width / 2, 310, "Toca un auto para sacarlo.\nVacía el parqueadero antes de quedarte sin vidas.", {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "18px",
         color: inkColor,
         align: "center",
@@ -77,7 +77,7 @@ export class MenuScene extends Phaser.Scene {
 
     const pickButton = this.add
       .text(GameConfig.width / 2, 528, "Elegir nivel", {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "16px",
         color: inkColor,
       })
@@ -88,7 +88,7 @@ export class MenuScene extends Phaser.Scene {
 
     const settingsButton = this.add
       .text(GameConfig.width / 2, 556, "⚙ Configuración", {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "14px",
         color: inkColor,
       })
@@ -99,7 +99,7 @@ export class MenuScene extends Phaser.Scene {
 
     const previewButton = this.add
       .text(GameConfig.width / 2, 582, "Modo desarrollador: niveles", {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "14px",
         color: mutedColor,
       })

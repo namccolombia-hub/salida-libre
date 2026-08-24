@@ -51,7 +51,7 @@ export class LevelPreviewScene extends Phaser.Scene {
 
     this.add
       .text(GameConfig.width / 2, 46, "Solo para revisar el diseño — no cuenta como jugado", {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "11px",
         color: Palette.textLight,
       })
@@ -94,7 +94,7 @@ export class LevelPreviewScene extends Phaser.Scene {
       if (badgeParts.length > 0) {
         const badge = this.add
           .text(x, y + 17, badgeParts.join(""), {
-            fontFamily: "Arial",
+            fontFamily: Palette.bodyFont,
             fontSize: "9px",
             color: Palette.textLight,
             wordWrap: { width: this.cellSize - 6 },

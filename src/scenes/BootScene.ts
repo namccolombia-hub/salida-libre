@@ -34,11 +34,11 @@ export class BootScene extends Phaser.Scene {
     void initCloudSave();
 
     // Canvas text is baked at draw time, not reactive like DOM text — if a
-    // scene drew with "Baloo 2" before the browser finished fetching it,
-    // it'd be stuck on the Arial fallback forever. Wait for it here (with a
+    // scene drew with these fonts before the browser finished fetching them,
+    // it'd be stuck on the fallback forever. Wait for both here (with a
     // timeout so a slow/blocked font host never hangs the game).
-    const fontReady = document.fonts.load('800 32px "Baloo 2"').catch(() => undefined);
+    const fontsReady = Promise.all([document.fonts.load('800 32px "Baloo 2"'), document.fonts.load('600 16px "Nunito"')]).catch(() => undefined);
     const timeout = new Promise((resolve) => setTimeout(resolve, 1500));
-    Promise.race([fontReady, timeout]).then(() => this.scene.start("MenuScene"));
+    Promise.race([fontsReady, timeout]).then(() => this.scene.start("MenuScene"));
   }
 }

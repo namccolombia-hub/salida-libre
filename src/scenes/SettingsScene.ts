@@ -30,7 +30,8 @@ export class SettingsScene extends Phaser.Scene {
 
     const back = this.add
       .text(20, 24, "‹ VOLVER", {
-        fontFamily: "Arial Black, Arial",
+        fontFamily: Palette.bodyFontBold,
+        fontStyle: "700",
         fontSize: "16px",
         color: Palette.textLight,
       })
@@ -66,7 +67,8 @@ export class SettingsScene extends Phaser.Scene {
   private async addAccountSection(rowY: number): Promise<void> {
     this.add
       .text(24, rowY - 14, "Cuenta", {
-        fontFamily: "Arial Black, Arial",
+        fontFamily: Palette.bodyFontBold,
+        fontStyle: "700",
         fontSize: "17px",
         color: Palette.textLight,
       })
@@ -74,7 +76,7 @@ export class SettingsScene extends Phaser.Scene {
 
     this.accountStatusText = this.add
       .text(24, rowY + 12, "Cargando…", {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "12px",
         color: "#8a909c",
         lineSpacing: 3,
@@ -114,7 +116,8 @@ export class SettingsScene extends Phaser.Scene {
   private addToggleRow(rowY: number, title: string, description: string, get: () => boolean, set: (v: boolean) => void): void {
     this.add
       .text(24, rowY - 14, title, {
-        fontFamily: "Arial Black, Arial",
+        fontFamily: Palette.bodyFontBold,
+        fontStyle: "700",
         fontSize: "17px",
         color: Palette.textLight,
       })
@@ -122,7 +125,7 @@ export class SettingsScene extends Phaser.Scene {
 
     this.add
       .text(24, rowY + 12, description, {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "12px",
         color: "#8a909c",
         lineSpacing: 3,
@@ -136,7 +139,8 @@ export class SettingsScene extends Phaser.Scene {
 
     const label = this.add
       .text(GameConfig.width - 60, rowY, "", {
-        fontFamily: "Arial Black, Arial",
+        fontFamily: Palette.bodyFontBold,
+        fontStyle: "700",
         fontSize: "13px",
         color: "#1c1f26",
       })

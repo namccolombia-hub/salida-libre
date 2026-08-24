@@ -57,7 +57,7 @@ function showNext(scene: Phaser.Scene, queue: string[], index: number, onAllDone
     .setDepth(62);
   const identifyText = scene.add
     .text(centerX - 150, centerY - 48, entry.identify, {
-      fontFamily: "Arial",
+      fontFamily: Palette.bodyFont,
       fontSize: "13px",
       color: Palette.textLight,
       wordWrap: { width: 300 },
@@ -77,7 +77,7 @@ function showNext(scene: Phaser.Scene, queue: string[], index: number, onAllDone
     .setDepth(62);
   const resolveText = scene.add
     .text(centerX - 150, resolveLabelY + 22, entry.resolve, {
-      fontFamily: "Arial",
+      fontFamily: Palette.bodyFont,
       fontSize: "13px",
       color: Palette.textLight,
       wordWrap: { width: 300 },

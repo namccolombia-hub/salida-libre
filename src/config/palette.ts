@@ -12,6 +12,11 @@ export const Palette = {
   // Google Fonts in index.html, with BootScene waiting for it to be ready
   // before any scene draws text. Falls back to the old system bold stack.
   displayFont: '"Baloo 2", Arial Black, Arial',
+  // Body/UI text face — same rounded family as the display font but built
+  // for reading at small sizes, replacing the old plain Arial. Also loaded
+  // and awaited in BootScene. `bodyFontBold` pairs with fontStyle "700".
+  bodyFont: '"Nunito", Arial, sans-serif',
+  bodyFontBold: '"Nunito", "Arial Black", Arial, sans-serif',
 } as const;
 
 // Car sprite art ships as these 5 pre-colored variants (recolored from a

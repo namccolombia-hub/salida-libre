@@ -386,7 +386,7 @@ export class ParkingScene extends Phaser.Scene {
     this.toastText?.destroy();
     this.toastText = this.add
       .text(GameConfig.width / 2, GameConfig.height - 70, message, {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "13px",
         color: Palette.textLight,
         backgroundColor: "#000000cc",
@@ -629,7 +629,7 @@ export class ParkingScene extends Phaser.Scene {
 
     const subtitle = this.add
       .text(GameConfig.width / 2, panelY - 40, `Puntaje: ${RunState.score}`, {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "18px",
         color: Palette.textLight,
       })
@@ -682,7 +682,7 @@ export class ParkingScene extends Phaser.Scene {
     for (let i = 0; i < GameConfig.livesMax; i++) {
       const heart = this.add
         .text(52 + i * 30, 16, "♥", {
-          fontFamily: "Arial",
+          fontFamily: Palette.bodyFont,
           fontSize: "26px",
           color: i < RunState.lives ? Palette.textDanger : "#3a3f4b",
         })
@@ -692,7 +692,7 @@ export class ParkingScene extends Phaser.Scene {
 
     this.scoreText = this.add
       .text(GameConfig.width - 16, 16, `${RunState.score}`, {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "26px",
         color: Palette.textGold,
       })
@@ -701,7 +701,7 @@ export class ParkingScene extends Phaser.Scene {
 
     this.levelText = this.add
       .text(GameConfig.width / 2, 54, "", {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "16px",
         color: Palette.textLight,
       })

@@ -218,7 +218,7 @@ export class LevelSelectScene extends Phaser.Scene {
     if (badgeParts.length > 0) {
       const diffText = this.add
         .text(x, y + this.nodeHeight / 2 + 12, badgeParts.join(""), {
-          fontFamily: "Arial",
+          fontFamily: Palette.bodyFont,
           fontSize: "10px",
           color: INK_COLOR,
           wordWrap: { width: 100 },
@@ -270,7 +270,7 @@ export class LevelSelectScene extends Phaser.Scene {
 
     const label = this.add
       .text(x, y + 16, spot.label, {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "9px",
         color: Palette.textLight,
         align: "center",

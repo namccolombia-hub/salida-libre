@@ -44,7 +44,7 @@ export class GameOverScene extends Phaser.Scene {
 
     this.add
       .text(GameConfig.width / 2, 300, "Autos sacados", {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "20px",
         color: Palette.textLight,
       })
@@ -84,7 +84,7 @@ export class GameOverScene extends Phaser.Scene {
 
     const menuLink = this.add
       .text(GameConfig.width / 2, canRevive ? 558 : 548, "Menú / elegir nivel", {
-        fontFamily: "Arial",
+        fontFamily: Palette.bodyFont,
         fontSize: "16px",
         color: Palette.textLight,
       })
