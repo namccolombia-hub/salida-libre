@@ -20,13 +20,12 @@ export class MenuScene extends Phaser.Scene {
     // theme would wash out — swap to a dark ink for everything but the
     // gold title, which reads fine against either.
     const inkColor = isNightTheme ? Palette.textLight : "#1c1f26";
-    const mutedColor = isNightTheme ? "#8a909c" : "#5a6068";
 
     drawVerticalGradient(this, GameConfig.width, GameConfig.height, startTheme.top, startTheme.bottom);
 
     this.buildBackdrop();
 
-    this.add
+    const title = this.add
       .text(GameConfig.width / 2, 190, "SALIDA\nLIBRE", {
         fontFamily: Palette.displayFont,
         fontSize: "56px",
@@ -35,7 +34,9 @@ export class MenuScene extends Phaser.Scene {
         lineSpacing: 6,
       })
       .setOrigin(0.5)
-      .setDepth(5);
+      .setDepth(5)
+      .setInteractive();
+    this.wireDevUnlock(title);
 
     this.add
       .text(GameConfig.width / 2, 310, "Toca un auto para sacarlo.\nVacía el parqueadero antes de quedarte sin vidas.", {
@@ -96,18 +97,31 @@ export class MenuScene extends Phaser.Scene {
       .setDepth(5)
       .setInteractive({ useHandCursor: true });
     settingsButton.on("pointerup", () => goTo(this, "SettingsScene"));
+  }
 
-    const previewButton = this.add
-      .text(GameConfig.width / 2, 582, "Modo desarrollador: niveles", {
-        fontFamily: Palette.bodyFont,
-        fontSize: "14px",
-        color: mutedColor,
-      })
-      .setOrigin(0.5)
-      .setDepth(5)
-      .setInteractive({ useHandCursor: true });
-    // Dev-tool navigation intentionally skips the fade — fast browsing matters more there.
-    previewButton.on("pointerup", () => this.scene.start("LevelPreviewScene"));
+  // Was a permanently-visible "Modo desarrollador" link — anyone in the
+  // store listing could find it. Now it's a silent tap-the-title gesture
+  // (7 taps within 2.5s, same convention as Android's own build-number
+  // unlock), so only someone who already knows it's there can reach it,
+  // in every build including production.
+  private wireDevUnlock(title: Phaser.GameObjects.Text): void {
+    const TAPS_REQUIRED = 7;
+    const WINDOW_MS = 2500;
+    let taps = 0;
+    let firstTapAt = 0;
+
+    title.on("pointerup", () => {
+      const now = this.time.now;
+      if (taps === 0 || now - firstTapAt > WINDOW_MS) {
+        taps = 0;
+        firstTapAt = now;
+      }
+      taps++;
+      if (taps >= TAPS_REQUIRED) {
+        taps = 0;
+        this.scene.start("LevelPreviewScene");
+      }
+    });
   }
 
   // A handful of translucent cars drifting across, well behind the title —

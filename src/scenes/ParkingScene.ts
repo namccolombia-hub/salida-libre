@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { GameConfig, Palette } from "../config/palette.ts";
+import { GameConfig, Palette, landmarkForLevel } from "../config/palette.ts";
 import { RunState } from "../state/RunState.ts";
 import { LevelState } from "../state/LevelState.ts";
 import type { CarInstance } from "../state/LevelState.ts";
@@ -113,6 +113,7 @@ export class ParkingScene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor(Palette.bgAsphalt);
     this.cameras.main.zoom = 1;
+    this.drawThemedBackground();
     fadeIn(this);
     playMusic(this, "parking");
     this.busy = false;
@@ -200,6 +201,28 @@ export class ParkingScene extends Phaser.Scene {
   private layoutGrid(): void {
     this.cellSize = this.computeCellSize();
     this.offsetX = (GameConfig.width - LevelState.cols * this.cellSize) / 2;
+  }
+
+  // Themes the empty asphalt around the board to whatever "zone" this level
+  // belongs to on the level-select road (same cycling — see
+  // landmarkForLevel). Purely cosmetic behind the fully-opaque board, so a
+  // missing background image (art not generated yet) just leaves the plain
+  // Palette.bgAsphalt camera background from create() untouched — no crash,
+  // no layout shift, nothing else to gate on.
+  private drawThemedBackground(): void {
+    const { key } = landmarkForLevel(LevelState.level);
+    const textureKey = `parking-bg-${key}`;
+    if (!this.textures.exists(textureKey)) return;
+
+    this.add.image(GameConfig.width / 2, GameConfig.height / 2, textureKey).setDepth(-2).setDisplaySize(GameConfig.width, GameConfig.height);
+
+    // A constant dark scrim, not just a night-only one — every HUD/text
+    // color in this scene was chosen assuming the old flat near-black
+    // background, so the location art can only ever show through faintly
+    // (enough to read as "you're at the hospital now", never enough to
+    // fight the HUD for contrast).
+    const scrimAlpha = this.isNight ? 0.78 : 0.62;
+    this.add.rectangle(0, 0, GameConfig.width, GameConfig.height, 0x0b0d12, scrimAlpha).setOrigin(0).setDepth(-1);
   }
 
   private drawGrid(): void {

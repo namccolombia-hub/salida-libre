@@ -27,6 +27,11 @@ export class BootScene extends Phaser.Scene {
 
     LANDMARK_KEYS.forEach((key) => {
       this.load.image(`landmark-${key}`, `/assets/landmarks/${key}.png`);
+      // Full-scene parking-lot backgrounds, one per landmark zone — not
+      // generated yet (see docs/parking-background-prompts.md). Missing
+      // files just 404 quietly; ParkingScene checks textures.exists() and
+      // falls back to the plain asphalt background until each one lands.
+      this.load.image(`parking-bg-${key}`, `/assets/parking-backgrounds/${key}.png`);
     });
 
     // Music — CC-BY 3.0 tracks from OpenGameArt.org (see CREDITS.md).

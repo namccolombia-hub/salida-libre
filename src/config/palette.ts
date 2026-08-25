@@ -51,6 +51,16 @@ export const LANDMARKS = [
 ] as const;
 export const LANDMARK_KEYS = LANDMARKS.map((l) => l.key);
 
+// Same cycling LevelSelectScene uses to place landmark markers (every 4
+// levels, wrapping every 10 landmarks) — reused here so ParkingScene can
+// theme a level's background to match the "zone" it visually belongs to
+// on the road. Levels 1-4 are the generic parking-lot zone, 5-8 are mall,
+// 9-12 casino, etc.
+export function landmarkForLevel(level: number): (typeof LANDMARKS)[number] {
+  const zoneIndex = Math.floor((level - 1) / 4) % LANDMARKS.length;
+  return LANDMARKS[zoneIndex];
+}
+
 // Boot/menu backdrop gradients — bright and light by day (better contrast
 // against the colorful car silhouettes), warm and dark by night, matching
 // the day/night split already used in-game (ParkingScene/ChaseScene check
