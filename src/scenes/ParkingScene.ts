@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { GameConfig, Palette, landmarkForLevel, landmarkPavementTint } from "../config/palette.ts";
+import { GameConfig, Palette, landmarkForLevel, landmarkPavementTint, landmarkAccentColor } from "../config/palette.ts";
 import { RunState } from "../state/RunState.ts";
 import { LevelState } from "../state/LevelState.ts";
 import type { CarInstance } from "../state/LevelState.ts";
@@ -65,6 +65,8 @@ export class ParkingScene extends Phaser.Scene {
   // with this same color so it reads as the same surface as the field
   // around it, not a separate box sitting on top of it.
   private pavementTint: number = Palette.bgAsphalt;
+  private frameGraphics?: Phaser.GameObjects.Graphics;
+  private badgeSprite?: Phaser.GameObjects.Image;
   private lampGraphics!: Phaser.GameObjects.Graphics;
   private shadowGraphics!: Phaser.GameObjects.Graphics;
   private modalLayer: Phaser.GameObjects.GameObject[] = [];
@@ -210,38 +212,74 @@ export class ParkingScene extends Phaser.Scene {
 
   // Themes the scene to whatever "zone" this level belongs to on the
   // level-select road (same cycling — see landmarkForLevel). The board's
-  // rows/cols/cellSize all change per level, so a static "parking lot"
-  // shape baked into generated art can never line up with it pixel for
-  // pixel — a full-bleed background image made that seam obvious (the
-  // board's flat gray pavement meeting a differently-shaped, differently
-  // colored lot from the art right at its edge). Instead: a flat tinted
-  // fill covers the whole scene (so the board always sits on a clean,
-  // matching surface no matter its size), and the generated art — if it
-  // exists yet — only ever shows as a cropped banner strip along the top,
-  // never reaching down to where the board could clash with it.
+  // rows/cols/cellSize all change per level, so nothing here can assume a
+  // fixed size — this only paints the flat field color; the board's own
+  // themed frame is drawn later, once the grid geometry is known (see
+  // drawLocationFrame(), called from drawGrid()).
   private drawThemedBackground(): void {
     const { key } = landmarkForLevel(LevelState.level);
-    const tint = landmarkPavementTint[key];
-    this.pavementTint = tint;
-    this.add.rectangle(0, 0, GameConfig.width, GameConfig.height, tint, 1).setOrigin(0).setDepth(-2);
-
-    const textureKey = `parking-bg-${key}`;
-    if (this.textures.exists(textureKey)) {
-      const BANNER_FRACTION = 0.38; // top slice of the source art used as a banner
-      const banner = this.add.image(GameConfig.width / 2, 0, textureKey).setOrigin(0.5, 0).setDepth(-2);
-      const srcW = banner.width;
-      const srcH = banner.height;
-      banner.setCrop(0, 0, srcW, srcH * BANNER_FRACTION);
-      banner.setScale(GameConfig.width / srcW);
-    }
+    this.pavementTint = landmarkPavementTint[key];
+    this.add.rectangle(0, 0, GameConfig.width, GameConfig.height, this.pavementTint, 1).setOrigin(0).setDepth(-2);
 
     // A constant dark scrim, not just a night-only one — every HUD/text
     // color in this scene was chosen assuming the old flat near-black
-    // background, so the location art can only ever show through faintly
+    // background, so location art can only ever show through faintly
     // (enough to read as "you're at the hospital now", never enough to
     // fight the HUD for contrast).
     const scrimAlpha = this.isNight ? 0.78 : 0.62;
     this.add.rectangle(0, 0, GameConfig.width, GameConfig.height, 0x0b0d12, scrimAlpha).setOrigin(0).setDepth(-1);
+  }
+
+  // Draws the board's own themed frame — a painted lot-boundary line in the
+  // location's accent color, with short perpendicular tick marks along the
+  // edges (like real parking-space lines), traced directly around the
+  // actual board rect for this level. This replaced an earlier attempt at
+  // stretching generated art with Phaser's 9-slice: 9-slice corners render
+  // at a fixed source-pixel size regardless of the object's on-screen size,
+  // which corrupted the slicing on this game's smaller boards (a 288px-wide
+  // board is easily smaller than 2x a reasonably-thick painted border).
+  // Drawing directly with Graphics has no such failure mode — it's always
+  // exactly the right size, for any level, by construction.
+  private drawLocationFrame(gridW: number, gridH: number): void {
+    this.frameGraphics?.destroy();
+    this.badgeSprite?.destroy();
+    this.badgeSprite = undefined;
+
+    const { key } = landmarkForLevel(LevelState.level);
+    const accent = landmarkAccentColor[key];
+    const radius = 10;
+
+    const g = this.add.graphics().setDepth(0);
+    g.lineStyle(4, accent, 0.9);
+    g.strokeRoundedRect(this.offsetX, this.offsetY, gridW, gridH, radius);
+
+    // Short ticks straddling the border, evenly spaced along each straight
+    // edge (skipping the rounded corners) — reads as painted lot-divider
+    // lines in the location's color.
+    const tickLength = 12;
+    const tickGap = 34;
+    g.fillStyle(accent, 0.9);
+    for (let x = this.offsetX + radius + tickGap / 2; x < this.offsetX + gridW - radius; x += tickGap) {
+      g.fillRect(x - 1.5, this.offsetY - tickLength / 2, 3, tickLength);
+      g.fillRect(x - 1.5, this.offsetY + gridH - tickLength / 2, 3, tickLength);
+    }
+    for (let y = this.offsetY + radius + tickGap / 2; y < this.offsetY + gridH - radius; y += tickGap) {
+      g.fillRect(this.offsetX - tickLength / 2, y - 1.5, tickLength, 3);
+      g.fillRect(this.offsetX + gridW - tickLength / 2, y - 1.5, tickLength, 3);
+    }
+    this.frameGraphics = g;
+
+    // The small level-select landmark icon, reused here as a "sign" for
+    // this board — real art already exists for all 10 locations, so this
+    // works with zero new assets. Sits just inside the board's top edge
+    // (there's no room above it without colliding with the level counter
+    // text) — depth puts it above the frame/pavement but below cars, so a
+    // car parked near the top just passes in front of it like a real sign.
+    const badgeKey = `landmark-${key}`;
+    if (this.textures.exists(badgeKey)) {
+      const badgeSize = 32;
+      this.badgeSprite = this.add.image(this.offsetX + gridW / 2, this.offsetY + badgeSize / 2 + 2, badgeKey).setDisplaySize(badgeSize, badgeSize).setDepth(4);
+    }
   }
 
   private drawGrid(): void {
@@ -253,10 +291,12 @@ export class ParkingScene extends Phaser.Scene {
     // no contrasting fill and no stroke border, so the board reads as the
     // same pavement continuing under the cars, not a separate box dropped
     // on top of the scene. Only the cars, obstacles, and lane markings
-    // communicate where play actually happens.
+    // communicate where play actually happens. The themed frame (if any)
+    // draws on top of this, exactly matching this rect's bounds.
     this.gridGraphics.fillStyle(this.pavementTint, 1);
     this.gridGraphics.fillRect(this.offsetX, this.offsetY, gridW, gridH);
 
+    this.drawLocationFrame(gridW, gridH);
     this.drawStreetLamps(gridW, gridH);
   }
 

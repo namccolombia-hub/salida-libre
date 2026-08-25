@@ -70,12 +70,11 @@ export const landmarkLabelKey: Record<LandmarkKey, "parkingLot" | "mall" | "casi
 // Flat pavement tint per zone for ParkingScene's themed background — the
 // grid is dynamically sized per level (rows/cols/cellSize all vary), so a
 // static "parking lot" shape baked into generated art can never line up
-// with it pixel-for-pixel. Instead the lot art is only ever shown as a top
-// banner (cropped, see ParkingScene.drawThemedBackground), and this flat
-// color fills everywhere the board and its surrounding pavement actually
-// render — guaranteeing there's never a visible seam. Kept close in
-// luminance to Palette.bgAsphalt (0x1c1f26) so existing HUD text contrast
-// isn't affected, just hue-shifted per location.
+// with it pixel-for-pixel. This flat color fills the whole scene (board and
+// surrounding field alike), guaranteeing there's never a visible seam
+// regardless of board size. Kept close in luminance to Palette.bgAsphalt
+// (0x1c1f26) so existing HUD text contrast isn't affected, just hue-shifted
+// per location.
 export const landmarkPavementTint: Record<LandmarkKey, number> = {
   "parking-lot": 0x1c1f26,
   mall: 0x241f33,
@@ -87,6 +86,23 @@ export const landmarkPavementTint: Record<LandmarkKey, number> = {
   park: 0x1a2a1a,
   "fast-food": 0x2a1f16,
   "car-wash": 0x16262a,
+};
+
+// Bright accent color for the board's painted lot-boundary line (see
+// ParkingScene.drawLocationFrame) — drawn directly with Graphics, sized to
+// the exact board rect for whatever level is showing, so it's never
+// misaligned the way a stretched image could be.
+export const landmarkAccentColor: Record<LandmarkKey, number> = {
+  "parking-lot": 0xf4c542,
+  mall: 0xff8fc7,
+  casino: 0xb478e0,
+  "gas-station": 0xff6b6b,
+  supermarket: 0x51cf66,
+  hospital: 0xff8a9b,
+  "police-station": 0x4fd1ff,
+  park: 0x69db7c,
+  "fast-food": 0xffa94d,
+  "car-wash": 0x66d9e8,
 };
 
 // Same cycling LevelSelectScene uses to place landmark markers (every 4
