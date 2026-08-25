@@ -61,6 +61,10 @@ export class ParkingScene extends Phaser.Scene {
   private carSprites = new Map<number, Phaser.GameObjects.Image>();
   private obstacleSprites: Phaser.GameObjects.Image[] = [];
   private gridGraphics!: Phaser.GameObjects.Graphics;
+  // Set by drawThemedBackground() before drawGrid() runs — the board fills
+  // with this same color so it reads as the same surface as the field
+  // around it, not a separate box sitting on top of it.
+  private pavementTint: number = Palette.bgAsphalt;
   private lampGraphics!: Phaser.GameObjects.Graphics;
   private shadowGraphics!: Phaser.GameObjects.Graphics;
   private modalLayer: Phaser.GameObjects.GameObject[] = [];
@@ -218,6 +222,7 @@ export class ParkingScene extends Phaser.Scene {
   private drawThemedBackground(): void {
     const { key } = landmarkForLevel(LevelState.level);
     const tint = landmarkPavementTint[key];
+    this.pavementTint = tint;
     this.add.rectangle(0, 0, GameConfig.width, GameConfig.height, tint, 1).setOrigin(0).setDepth(-2);
 
     const textureKey = `parking-bg-${key}`;
@@ -244,12 +249,13 @@ export class ParkingScene extends Phaser.Scene {
     const gridW = LevelState.cols * this.cellSize;
     const gridH = LevelState.rows * this.cellSize;
 
-    const asphaltColor = this.isNight ? Palette.bgAsphalt : 0x9aa0a8;
-    this.gridGraphics.fillStyle(asphaltColor, 1);
+    // Same exact color as the field around it (see drawThemedBackground) —
+    // no contrasting fill and no stroke border, so the board reads as the
+    // same pavement continuing under the cars, not a separate box dropped
+    // on top of the scene. Only the cars, obstacles, and lane markings
+    // communicate where play actually happens.
+    this.gridGraphics.fillStyle(this.pavementTint, 1);
     this.gridGraphics.fillRect(this.offsetX, this.offsetY, gridW, gridH);
-
-    this.gridGraphics.lineStyle(2, this.isNight ? Palette.wallSolid : 0x6b7178, 1);
-    this.gridGraphics.strokeRect(this.offsetX, this.offsetY, gridW, gridH);
 
     this.drawStreetLamps(gridW, gridH);
   }
