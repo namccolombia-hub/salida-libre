@@ -67,6 +67,28 @@ export const landmarkLabelKey: Record<LandmarkKey, "parkingLot" | "mall" | "casi
   "car-wash": "carWash",
 };
 
+// Flat pavement tint per zone for ParkingScene's themed background — the
+// grid is dynamically sized per level (rows/cols/cellSize all vary), so a
+// static "parking lot" shape baked into generated art can never line up
+// with it pixel-for-pixel. Instead the lot art is only ever shown as a top
+// banner (cropped, see ParkingScene.drawThemedBackground), and this flat
+// color fills everywhere the board and its surrounding pavement actually
+// render — guaranteeing there's never a visible seam. Kept close in
+// luminance to Palette.bgAsphalt (0x1c1f26) so existing HUD text contrast
+// isn't affected, just hue-shifted per location.
+export const landmarkPavementTint: Record<LandmarkKey, number> = {
+  "parking-lot": 0x1c1f26,
+  mall: 0x241f33,
+  casino: 0x2a1a33,
+  "gas-station": 0x2a1a16,
+  supermarket: 0x1a2a1f,
+  hospital: 0x16232a,
+  "police-station": 0x161c2a,
+  park: 0x1a2a1a,
+  "fast-food": 0x2a1f16,
+  "car-wash": 0x16262a,
+};
+
 // Same cycling LevelSelectScene uses to place landmark markers (every 4
 // levels, wrapping every 10 landmarks) — reused here so ParkingScene can
 // theme a level's background to match the "zone" it visually belongs to

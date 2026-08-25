@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { GameConfig, Palette, landmarkForLevel } from "../config/palette.ts";
+import { GameConfig, Palette, landmarkForLevel, landmarkPavementTint } from "../config/palette.ts";
 import { RunState } from "../state/RunState.ts";
 import { LevelState } from "../state/LevelState.ts";
 import type { CarInstance } from "../state/LevelState.ts";
@@ -204,18 +204,31 @@ export class ParkingScene extends Phaser.Scene {
     this.offsetX = (GameConfig.width - LevelState.cols * this.cellSize) / 2;
   }
 
-  // Themes the empty asphalt around the board to whatever "zone" this level
-  // belongs to on the level-select road (same cycling — see
-  // landmarkForLevel). Purely cosmetic behind the fully-opaque board, so a
-  // missing background image (art not generated yet) just leaves the plain
-  // Palette.bgAsphalt camera background from create() untouched — no crash,
-  // no layout shift, nothing else to gate on.
+  // Themes the scene to whatever "zone" this level belongs to on the
+  // level-select road (same cycling — see landmarkForLevel). The board's
+  // rows/cols/cellSize all change per level, so a static "parking lot"
+  // shape baked into generated art can never line up with it pixel for
+  // pixel — a full-bleed background image made that seam obvious (the
+  // board's flat gray pavement meeting a differently-shaped, differently
+  // colored lot from the art right at its edge). Instead: a flat tinted
+  // fill covers the whole scene (so the board always sits on a clean,
+  // matching surface no matter its size), and the generated art — if it
+  // exists yet — only ever shows as a cropped banner strip along the top,
+  // never reaching down to where the board could clash with it.
   private drawThemedBackground(): void {
     const { key } = landmarkForLevel(LevelState.level);
-    const textureKey = `parking-bg-${key}`;
-    if (!this.textures.exists(textureKey)) return;
+    const tint = landmarkPavementTint[key];
+    this.add.rectangle(0, 0, GameConfig.width, GameConfig.height, tint, 1).setOrigin(0).setDepth(-2);
 
-    this.add.image(GameConfig.width / 2, GameConfig.height / 2, textureKey).setDepth(-2).setDisplaySize(GameConfig.width, GameConfig.height);
+    const textureKey = `parking-bg-${key}`;
+    if (this.textures.exists(textureKey)) {
+      const BANNER_FRACTION = 0.38; // top slice of the source art used as a banner
+      const banner = this.add.image(GameConfig.width / 2, 0, textureKey).setOrigin(0.5, 0).setDepth(-2);
+      const srcW = banner.width;
+      const srcH = banner.height;
+      banner.setCrop(0, 0, srcW, srcH * BANNER_FRACTION);
+      banner.setScale(GameConfig.width / srcW);
+    }
 
     // A constant dark scrim, not just a night-only one — every HUD/text
     // color in this scene was chosen assuming the old flat near-black
