@@ -1,8 +1,9 @@
 import Phaser from "phaser";
 import { GameConfig, Palette } from "../config/palette.ts";
 import { loadSeenTutorials, saveSeenTutorial } from "../state/Persistence.ts";
-import { TUTORIAL_CONTENT } from "./tutorialContent.ts";
+import { TUTORIAL_ICONS, type TutorialId } from "./tutorialContent.ts";
 import { createButton } from "./Button.ts";
+import { strings } from "../i18n/index.ts";
 
 /**
  * Shows any not-yet-seen tutorials from `ids`, one at a time, each blocking
@@ -13,7 +14,7 @@ import { createButton } from "./Button.ts";
  */
 export function showTutorialQueue(scene: Phaser.Scene, ids: string[], onAllDone: () => void): void {
   const seen = loadSeenTutorials();
-  const queue = ids.filter((id) => !seen.has(id) && TUTORIAL_CONTENT[id]);
+  const queue = ids.filter((id) => !seen.has(id) && id in TUTORIAL_ICONS) as TutorialId[];
   if (queue.length === 0) {
     onAllDone();
     return;
@@ -21,12 +22,13 @@ export function showTutorialQueue(scene: Phaser.Scene, ids: string[], onAllDone:
   showNext(scene, queue, 0, onAllDone);
 }
 
-function showNext(scene: Phaser.Scene, queue: string[], index: number, onAllDone: () => void): void {
+function showNext(scene: Phaser.Scene, queue: TutorialId[], index: number, onAllDone: () => void): void {
   if (index >= queue.length) {
     onAllDone();
     return;
   }
-  const entry = TUTORIAL_CONTENT[queue[index]];
+  const id = queue[index];
+  const entry = strings().tutorial[id];
   const centerX = GameConfig.width / 2;
   const centerY = GameConfig.height / 2;
 
@@ -34,7 +36,7 @@ function showNext(scene: Phaser.Scene, queue: string[], index: number, onAllDone
   const panel = scene.add.rectangle(centerX, centerY, 340, 420, Palette.bgAsphaltLight, 1).setDepth(61);
   panel.setStrokeStyle(2, Palette.wallSolid, 1);
 
-  const icon = scene.add.text(centerX, centerY - 175, entry.icon, { fontSize: "40px" }).setOrigin(0.5).setDepth(62);
+  const icon = scene.add.text(centerX, centerY - 175, TUTORIAL_ICONS[id], { fontSize: "40px" }).setOrigin(0.5).setDepth(62);
 
   const title = scene.add
     .text(centerX, centerY - 120, entry.title, {
@@ -48,7 +50,7 @@ function showNext(scene: Phaser.Scene, queue: string[], index: number, onAllDone
     .setDepth(62);
 
   const identifyLabel = scene.add
-    .text(centerX - 150, centerY - 70, "Cómo identificarlo", {
+    .text(centerX - 150, centerY - 70, strings().tutorialUi.identifyLabel, {
       fontFamily: Palette.displayFont,
       fontSize: "13px",
       color: "#4fd1ff",
@@ -68,7 +70,7 @@ function showNext(scene: Phaser.Scene, queue: string[], index: number, onAllDone
 
   const resolveLabelY = centerY - 48 + identifyText.height + 16;
   const resolveLabel = scene.add
-    .text(centerX - 150, resolveLabelY, "Cómo resolverlo", {
+    .text(centerX - 150, resolveLabelY, strings().tutorialUi.resolveLabel, {
       fontFamily: Palette.displayFont,
       fontSize: "13px",
       color: "#51cf66",
@@ -86,7 +88,7 @@ function showNext(scene: Phaser.Scene, queue: string[], index: number, onAllDone
     .setOrigin(0, 0)
     .setDepth(62);
 
-  const button = createButton(scene, centerX, centerY + 175, 200, 48, "¡ENTENDIDO!", { fontSize: "15px" });
+  const button = createButton(scene, centerX, centerY + 175, 200, 48, strings().tutorialUi.gotIt, { fontSize: "15px" });
   button.container.setDepth(62);
 
   const layer = [overlay, panel, icon, title, identifyLabel, identifyText, resolveLabel, resolveText, button.container];

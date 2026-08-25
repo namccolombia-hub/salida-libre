@@ -36,20 +36,36 @@ export const CarColorHex: Record<CarColorKey, number> = {
 // art (not emoji), each shipping its own baked-in card frame, so
 // LevelSelectScene just places the image without drawing a frame of its
 // own. Texture key is `landmark-${key}`, source file `public/assets/
-// landmarks/${key}.png`.
+// landmarks/${key}.png`. Display labels live in the i18n dictionaries
+// (strings().landmarks) — landmarkLabelKey below maps each kebab-case key
+// here to its camelCase property over there.
 export const LANDMARKS = [
-  { key: "parking-lot", label: "Parqueadero" },
-  { key: "mall", label: "Centro comercial" },
-  { key: "casino", label: "Casino" },
-  { key: "gas-station", label: "Gasolinera" },
-  { key: "supermarket", label: "Supermercado" },
-  { key: "hospital", label: "Hospital" },
-  { key: "police-station", label: "Estación de policía" },
-  { key: "park", label: "Parque" },
-  { key: "fast-food", label: "Comida rápida" },
-  { key: "car-wash", label: "Lavadero de autos" },
+  { key: "parking-lot" },
+  { key: "mall" },
+  { key: "casino" },
+  { key: "gas-station" },
+  { key: "supermarket" },
+  { key: "hospital" },
+  { key: "police-station" },
+  { key: "park" },
+  { key: "fast-food" },
+  { key: "car-wash" },
 ] as const;
 export const LANDMARK_KEYS = LANDMARKS.map((l) => l.key);
+export type LandmarkKey = (typeof LANDMARK_KEYS)[number];
+
+export const landmarkLabelKey: Record<LandmarkKey, "parkingLot" | "mall" | "casino" | "gasStation" | "supermarket" | "hospital" | "policeStation" | "park" | "fastFood" | "carWash"> = {
+  "parking-lot": "parkingLot",
+  mall: "mall",
+  casino: "casino",
+  "gas-station": "gasStation",
+  supermarket: "supermarket",
+  hospital: "hospital",
+  "police-station": "policeStation",
+  park: "park",
+  "fast-food": "fastFood",
+  "car-wash": "carWash",
+};
 
 // Same cycling LevelSelectScene uses to place landmark markers (every 4
 // levels, wrapping every 10 landmarks) — reused here so ParkingScene can

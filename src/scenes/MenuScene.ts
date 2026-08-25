@@ -6,6 +6,7 @@ import { createButton } from "../ui/Button.ts";
 import { goTo, fadeIn } from "../fx/sceneTransition.ts";
 import { play as playMusic } from "../audio/music.ts";
 import { drawVerticalGradient } from "../fx/gradient.ts";
+import { strings, format } from "../i18n/index.ts";
 
 export class MenuScene extends Phaser.Scene {
   constructor() {
@@ -26,7 +27,7 @@ export class MenuScene extends Phaser.Scene {
     this.buildBackdrop();
 
     const title = this.add
-      .text(GameConfig.width / 2, 190, "SALIDA\nLIBRE", {
+      .text(GameConfig.width / 2, 190, strings().menu.title, {
         fontFamily: Palette.displayFont,
         fontSize: "56px",
         color: Palette.textGold,
@@ -39,7 +40,7 @@ export class MenuScene extends Phaser.Scene {
     this.wireDevUnlock(title);
 
     this.add
-      .text(GameConfig.width / 2, 310, "Toca un auto para sacarlo.\nVacía el parqueadero antes de quedarte sin vidas.", {
+      .text(GameConfig.width / 2, 310, strings().menu.tagline, {
         fontFamily: Palette.bodyFont,
         fontSize: "18px",
         color: inkColor,
@@ -56,7 +57,7 @@ export class MenuScene extends Phaser.Scene {
       460,
       240,
       64,
-      resuming ? `CONTINUAR · NIVEL ${LevelState.maxLevelUnlocked}` : "JUGAR",
+      resuming ? format(strings().menu.continueLevel, { level: LevelState.maxLevelUnlocked }) : strings().menu.play,
       { fontSize: resuming ? "17px" : "24px" },
     );
     button.container.setDepth(5);
@@ -77,7 +78,7 @@ export class MenuScene extends Phaser.Scene {
     });
 
     const pickButton = this.add
-      .text(GameConfig.width / 2, 528, "Elegir nivel", {
+      .text(GameConfig.width / 2, 528, strings().menu.pickLevel, {
         fontFamily: Palette.bodyFont,
         fontSize: "16px",
         color: inkColor,
@@ -88,7 +89,7 @@ export class MenuScene extends Phaser.Scene {
     pickButton.on("pointerup", () => goTo(this, "LevelSelectScene"));
 
     const settingsButton = this.add
-      .text(GameConfig.width / 2, 556, "⚙ Configuración", {
+      .text(GameConfig.width / 2, 556, strings().menu.settings, {
         fontFamily: Palette.bodyFont,
         fontSize: "14px",
         color: inkColor,

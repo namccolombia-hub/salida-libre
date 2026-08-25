@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Salida Libre</title>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap");
+
+  :root {
+    --paper: #faf7f2;
+    --paper-alt: #f3ede3;
+    --ink: #2a2420;
+    --ink-soft: #6b6055;
+    --ink-faint: #948a7d;
+    --accent: #b8571f;
+    --accent-soft: #e0a172;
+    --line: #e4dcd1;
+    --surface: #ffffff;
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --sans: "Public Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 56px 24px 96px; }
+
+  header.letterhead {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--surface);
+    padding: 32px 32px 28px;
+    margin-bottom: 40px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(28px, 5vw, 38px);
+    line-height: 1.15;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+
+  .letterhead dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 4px 14px;
+    margin: 18px 0 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .letterhead dt { font-weight: 600; color: var(--ink); }
+  .letterhead dd { margin: 0; font-variant-numeric: tabular-nums; }
+
+  nav.toc {
+    background: var(--paper-alt);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+  }
+  nav.toc p.label {
+    margin: 0 0 10px;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+  }
+  nav.toc ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    columns: 2;
+    column-gap: 24px;
+  }
+  nav.toc li { break-inside: avoid; margin-bottom: 6px; font-size: 14px; }
+  nav.toc a { color: var(--ink-soft); text-decoration: none; }
+  nav.toc a:hover { color: var(--accent); text-decoration: underline; }
+
+  article { counter-reset: section; }
+
+  section.clause {
+    counter-increment: section;
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+    scroll-margin-top: 24px;
+  }
+  section.clause:first-of-type { border-top: none; padding-top: 0; }
+
+  h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 22px;
+    margin: 0 0 14px;
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    text-wrap: balance;
+  }
+  h2::before {
+    content: counter(section);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    border: 1px solid var(--accent-soft);
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transform: translateY(-1px);
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 15px;
+    margin: 20px 0 8px;
+    color: var(--ink);
+  }
+
+  p { margin: 0 0 14px; max-width: 66ch; color: var(--ink); }
+  section.clause p:last-child { margin-bottom: 0; }
+
+  ul, ol.plain { margin: 0 0 14px; padding-left: 22px; max-width: 62ch; }
+  ul li, ol.plain li { margin-bottom: 6px; }
+
+  .callout {
+    background: var(--paper-alt);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+  }
+  .callout strong { color: var(--ink); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 18px;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  th { font-weight: 700; color: var(--ink-faint); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  footer {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-faint);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 520px) {
+    .wrap { padding: 32px 16px 64px; }
+    header.letterhead { padding: 24px 20px; }
+    nav.toc ol { columns: 1; }
+    .letterhead dl { grid-template-columns: 1fr; }
+  }
+
+  .lang-switch { font-size: 13px; color: var(--ink-faint); margin-bottom: 20px; }
+  .lang-switch a { color: var(--ink-soft); text-decoration: none; }
+  .lang-switch a:hover { color: var(--accent); text-decoration: underline; }
+  .lang-switch a[aria-current] { color: var(--accent); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="lang-switch"><a href="./privacy.html">Español</a> · <a href="./privacy.en.html" aria-current="page">English</a> · <a href="./privacy.pt.html">Português</a></p>
+  <header class="letterhead">
+    <p class="eyebrow">Legal document</p>
+    <h1>Salida Libre Privacy Policy</h1>
+    <dl>
+      <dt>App</dt><dd>Salida Libre</dd>
+      <dt>Data controller</dt><dd>Sebastián Serrano — Namc Colombia</dd>
+      <dt>Contact</dt><dd><a href="mailto:namccolombia@gmail.com">namccolombia@gmail.com</a></dd>
+      <dt>Last updated</dt><dd>August 23, 2026</dd>
+    </dl>
+  </header>
+
+  <div class="callout"><strong>Note:</strong> this is an informational translation. The <a href="./privacy.html">Spanish-language version</a> is the authoritative text; in case of any discrepancy, the Spanish version prevails.</div>
+
+  <nav class="toc" aria-label="Table of contents">
+    <p class="label">In this document</p>
+    <ol>
+      <li><a href="#resumen">Plain-language summary</a></li>
+      <li><a href="#quien">Who processes your data</a></li>
+      <li><a href="#datos-locales">Data that stays on your device</a></li>
+      <li><a href="#cuenta">Optional account (Play Games / Game Center)</a></li>
+      <li><a href="#publicidad">Advertising (Google AdMob)</a></li>
+      <li><a href="#terceros">Third-party services summary</a></li>
+      <li><a href="#menores">Children's privacy</a></li>
+      <li><a href="#derechos">Your rights (Colombia, EU, California)</a></li>
+      <li><a href="#seguridad">Security and retention</a></li>
+      <li><a href="#cambios">Changes to this policy</a></li>
+      <li><a href="#contacto">Contact</a></li>
+    </ol>
+  </nav>
+
+  <article>
+    <section class="clause" id="resumen">
+      <h2>Plain-language summary</h2>
+      <p>Salida Libre doesn't ask you to create an account, or ask for your name, email, or password to play. Your progress (how far you've gotten) is saved on your own device. If you choose to link your Google Play Games or Game Center account, that progress is also saved to that platform's cloud. The app shows ads (an optional rewarded video and interstitials) through Google AdMob, which receives device identifiers in order to show and measure them. We don't use any analytics tools or collect data for any purpose other than what's described here.</p>
+    </section>
+
+    <section class="clause" id="quien">
+      <h2>Who processes your data</h2>
+      <p>Salida Libre is developed and published by <strong>Sebastián Serrano</strong>, trading as <strong>Namc Colombia</strong>, a natural person registered in Colombia. For the purposes of this policy, this person is the controller responsible for processing the data described in the sections below.</p>
+    </section>
+
+    <section class="clause" id="datos-locales">
+      <h2>Data that stays on your device</h2>
+      <p>The app stores this information only in your browser's or device's local storage (it isn't sent to our servers, because we don't operate any servers of our own):</p>
+      <ul>
+        <li>The highest level you've reached.</li>
+        <li>Your music, sound effects, and visual hints preferences.</li>
+        <li>Which in-game tutorials you've already seen, so they aren't repeated.</li>
+      </ul>
+      <p>If you uninstall the app or clear your browser data, this information is lost — unless you've linked your account, as explained below.</p>
+    </section>
+
+    <section class="clause" id="cuenta">
+      <h2>Optional account (Play Games / Game Center)</h2>
+      <p>Linking your account is <strong>entirely optional</strong> — the game works the same without it, and we never require it to play. If you choose to link it from Settings:</p>
+      <ul>
+        <li>We use <strong>Google Play Games Services</strong> (Android) or <strong>Game Center</strong> (iOS) sign-in — we never see or store your Google or Apple password at any point.</li>
+        <li>We receive your player identifier and your display name on that platform, to show you "Signed in as [your name]".</li>
+        <li>We save a single piece of data to that platform's cloud: the highest level you've reached, so you can recover it if you switch devices.</li>
+        <li>We don't access your friends list, achievements from other games, or any other data from your Google or Apple account.</li>
+      </ul>
+      <p>This sign-in is also subject to Google's and Apple's own privacy policies:</p>
+      <ul>
+        <li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
+        <li><a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple Privacy Policy</a></li>
+      </ul>
+    </section>
+
+    <section class="clause" id="publicidad">
+      <h2>Advertising (Google AdMob)</h2>
+      <p>Salida Libre is funded by showing ads through <strong>Google AdMob</strong>: an optional rewarded video (to recover a life) and occasional interstitial ads between levels. To show and measure these ads, AdMob automatically receives:</p>
+      <ul>
+        <li>An advertising identifier from your device (Advertising ID on Android, IDFA on iOS) — you can reset or limit it from your phone's settings at any time.</li>
+        <li>Basic technical device information (model, operating system, language, time zone) and ad interaction data (whether it was shown, whether it was completed).</li>
+      </ul>
+      <p>In the European Union and the United Kingdom, the first time you open the app we show a consent form (through Google's User Messaging Platform) where you can choose whether to accept personalized ads, and you can change that choice at any time from Settings → Ad privacy options. On iOS, you'll also see Apple's <strong>App Tracking Transparency</strong> prompt — if you decline it, you'll still see ads, just less personalized ones. We don't choose or control which specific advertiser AdMob shows you.</p>
+      <div class="callout"><strong>Note:</strong> we don't share, sell, or transfer any of your data to AdMob beyond what Google's own SDK integration automatically collects to operate.</div>
+    </section>
+
+    <section class="clause" id="terceros">
+      <h2>Third-party services summary</h2>
+      <table>
+        <thead><tr><th>Service</th><th>What we use it for</th><th>Data it receives</th></tr></thead>
+        <tbody>
+          <tr><td>Google AdMob</td><td>Showing and measuring ads</td><td>Advertising identifier, technical device data</td></tr>
+          <tr><td>Google Play Games Services</td><td>Sign-in and cloud save (optional)</td><td>Player identifier, display name</td></tr>
+          <tr><td>Apple Game Center</td><td>Sign-in and cloud save (optional)</td><td>Player identifier, display name</td></tr>
+        </tbody>
+      </table>
+      <p>We don't integrate any analytics tool (like Firebase Analytics or similar), social networks, or chat services.</p>
+    </section>
+
+    <section class="clause" id="menores">
+      <h2>Children's privacy</h2>
+      <p>Salida Libre is aimed at a general audience and isn't specifically designed for children under 13. We don't knowingly collect personal information from children under 13. If you're a parent or guardian and believe a child in your care has provided us with personal information, contact us using the details in the contact section so we can remove it.</p>
+    </section>
+
+    <section class="clause" id="derechos">
+      <h2>Your rights</h2>
+      <h3>Colombia — Law 1581 of 2012 (Habeas Data)</h3>
+      <p>If you're a resident of Colombia, you have the right to know, update, correct, and request the deletion of your data, as well as to revoke authorization granted for its processing, under Law 1581 of 2012 and its implementing decrees. Since we don't collect personal data directly (other than your game account identifier, if you choose to link it), these requests are handled by unlinking your account and deleting the cloud-saved progress data associated with it.</p>
+      <h3>European Union / United Kingdom — GDPR</h3>
+      <p>If you're located in the EU or the UK, you have the right of access, rectification, erasure, restriction of processing, portability, and objection over any data we process directly. Data processed by Google (AdMob, Play Games) is also subject to the consent mechanisms and rights Google offers directly.</p>
+      <h3>California — CCPA/CPRA</h3>
+      <p>If you're a California resident, you have the right to know what information is collected and to request its deletion. We don't sell personal information. AdMob's use of advertising identifiers may be considered "sharing" under the CPRA for advertising purposes; you can limit it from your device's ad settings.</p>
+      <p>To exercise any of these rights, write to us at <a href="mailto:namccolombia@gmail.com">namccolombia@gmail.com</a>.</p>
+    </section>
+
+    <section class="clause" id="seguridad">
+      <h2>Security and retention</h2>
+      <p>Locally stored data remains on your device as long as you don't uninstall the app or clear its storage. Data from your linked account (if applicable) is retained as long as the account stays linked and is deleted when you unlink it, per Google's/Apple's own retention policies for their services. We don't operate our own database with your information.</p>
+    </section>
+
+    <section class="clause" id="cambios">
+      <h2>Changes to this policy</h2>
+      <p>We may update this policy when the app's features change (for example, if we add new services or monetization methods in the future). The "Last updated" date in the header always reflects the current version. Significant changes will be announced within the app itself whenever reasonably possible.</p>
+    </section>
+
+    <section class="clause" id="contacto">
+      <h2>Contact</h2>
+      <p>For questions, data-related requests, or any doubts about this policy, write to us at:</p>
+      <p><a href="mailto:namccolombia@gmail.com">namccolombia@gmail.com</a></p>
+    </section>
+  </article>
+
+  <footer>
+    <span>Salida Libre — Namc Colombia</span>
+    <span>In effect since August 23, 2026</span>
+  </footer>
+</div>
+</body>
+</html>

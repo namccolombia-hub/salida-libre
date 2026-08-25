@@ -43,6 +43,87 @@ Salida Libre es ideal para partidas cortas: sesiones rápidas, fáciles de
 retomar en cualquier momento del día.
 ```
 
+### Versión en inglés (para la ficha en inglés de Play Console)
+
+Play Console permite agregar una ficha por idioma ("Store listing" →
+"Manage translations" / "Add language"). El juego ya soporta español,
+inglés y portugués (selector de idioma en Configuración, detecta el
+idioma del teléfono automáticamente la primera vez). Pegá esto en la
+ficha en inglés:
+
+**Nombre** (máx. 30 caracteres):
+```
+Salida Libre: Parking Puzzle
+```
+
+**Descripción breve** (máx. 80 caracteres):
+```
+Move the cars, clear the exit, and dodge traffic in the chase.
+```
+
+**Descripción completa**:
+```
+Salida Libre is a parking puzzle: every car only moves in a straight
+line, forward or backward. Your job is to clear the way and get every
+car out before you run out of lives.
+
+HOW TO PLAY
+• Tap a car to launch it in its direction.
+• If the path is clear, it drives out of the lot.
+• If it hits another car, you don't lose a life right away — you enter
+  a first-person chase mode, where you can dodge obstacles and save it
+  at the last second.
+• Clear levels, climb the difficulty, and unlock new city zones: mall,
+  casino, gas station, supermarket, and more.
+
+FEATURES
+• Dozens of levels of increasing difficulty.
+• Chase mode with crash physics and obstacle dodging.
+• A level picker set in a city, with recognizable stops along the road.
+• Original music and sound effects, with a mute option.
+• Optional Google Play Games account linking to save your progress to
+  the cloud.
+• Completely free, ad-supported — no required purchases.
+```
+
+### Versão em português (para a ficha em português do Play Console)
+
+**Nome** (máx. 30 caracteres):
+```
+Salida Libre: Estacionamento
+```
+
+**Descrição breve** (máx. 80 caracteres):
+```
+Mova os carros, libere a saída e desvie do trânsito na perseguição.
+```
+
+**Descrição completa**:
+```
+Salida Libre é um quebra-cabeça de estacionamento: cada carro só se
+move em linha reta, para frente ou para trás. Sua missão é abrir
+caminho e tirar todos os carros antes de ficar sem vidas.
+
+COMO JOGAR
+• Toque em um carro para lançá-lo na sua direção.
+• Se o caminho estiver livre, ele sai do estacionamento.
+• Se bater em outro carro, você não perde a vida na hora — entra no
+  modo perseguição em primeira pessoa, onde pode desviar de obstáculos
+  e salvá-lo no último segundo.
+• Avance de nível, suba a dificuldade e desbloqueie novas zonas da
+  cidade: shopping, cassino, posto de gasolina, supermercado e mais.
+
+RECURSOS
+• Dezenas de níveis de dificuldade crescente.
+• Modo perseguição com física de colisão e desvio de obstáculos.
+• Seletor de níveis ambientado em uma cidade, com paradas reconhecíveis.
+• Música e efeitos sonoros originais, com opção de silenciar.
+• Vinculação opcional com sua conta do Google Play Games para salvar
+  seu progresso na nuvem.
+• Totalmente grátis, financiado por publicidade — sem compras
+  obrigatórias.
+```
+
 **Categoría**: Puzzle (o Arcade, cualquiera de las dos encaja).
 
 **Etiqueta de datos de contacto**:
@@ -70,19 +151,34 @@ directo del APK/AAB, no hace falta subirlo dos veces).
 
 ## 3. Política de privacidad y Términos — activar GitHub Pages
 
-Ya están escritos y en el repo (`docs/privacy.html` y `docs/terms.html`),
-pero necesitan que actives GitHub Pages una vez (dura 1 minuto):
+Ya están escritos y en el repo, en español (`docs/privacy.html`,
+`docs/terms.html` — la versión legalmente autoritativa) y también
+traducidos a inglés y portugués (`docs/privacy.en.html`,
+`docs/privacy.pt.html`, `docs/terms.en.html`, `docs/terms.pt.html` — cada
+una dice claramente que es una traducción informativa y que la versión
+en español prevalece en caso de conflicto, práctica estándar para
+documentos legales multi-idioma). Solo falta que actives GitHub Pages
+una vez (dura 1 minuto):
 
 1. Andá a `https://github.com/namccolombia-hub/salida-libre/settings/pages`
 2. En "Build and deployment" → "Source", elegí **Deploy from a branch**.
 3. En "Branch", elegí **main** y la carpeta **/docs**, después **Save**.
 4. Esperá 1-2 minutos. La política va a quedar en:
    `https://namccolombia-hub.github.io/salida-libre/privacy.html`
+   (inglés: `/privacy.en.html`, portugués: `/privacy.pt.html`)
    y los términos en:
    `https://namccolombia-hub.github.io/salida-libre/terms.html`
+   (inglés: `/terms.en.html`, portugués: `/terms.pt.html`)
 
-Esa primera URL es la que pegás en Play Console (Store listing → Privacy
-policy) y en la configuración de AdMob.
+Dentro del juego, el enlace "Privacidad"/"Privacy"/"Privacidade" en
+Configuración ya abre automáticamente la versión que corresponde al
+idioma activo — no hace falta hacer nada más ahí.
+
+Para Play Console, pegá la URL en español (`/privacy.html`) como
+Privacy policy principal de la ficha, y en la configuración de AdMob.
+Si agregás fichas de tienda en inglés/portugués (sección 1), podés
+poner ahí la URL con el sufijo de idioma correspondiente si querés que
+el revisor/usuario vea directamente la versión traducida.
 
 ## 4. Firma de la app (keystore) — hacelo vos
 

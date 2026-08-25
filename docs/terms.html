@@ -184,10 +184,16 @@
     nav.toc ol { columns: 1; }
     .letterhead dl { grid-template-columns: 1fr; }
   }
+
+  .lang-switch { font-size: 13px; color: var(--ink-faint); margin-bottom: 20px; }
+  .lang-switch a { color: var(--ink-soft); text-decoration: none; }
+  .lang-switch a:hover { color: var(--accent); text-decoration: underline; }
+  .lang-switch a[aria-current] { color: var(--accent); font-weight: 600; }
 </style>
 </head>
 <body>
 <div class="wrap">
+  <p class="lang-switch"><a href="./terms.html" aria-current="page">Español</a> · <a href="./terms.en.html">English</a> · <a href="./terms.pt.html">Português</a></p>
   <header class="letterhead">
     <p class="eyebrow">Documento legal</p>
     <h1>Términos y Condiciones de Salida Libre</h1>

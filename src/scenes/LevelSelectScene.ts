@@ -1,9 +1,10 @@
 import Phaser from "phaser";
-import { CAR_COLOR_KEYS, GameConfig, Palette, isNightTheme, LANDMARKS } from "../config/palette.ts";
+import { CAR_COLOR_KEYS, GameConfig, Palette, isNightTheme, LANDMARKS, landmarkLabelKey } from "../config/palette.ts";
 import { RunState } from "../state/RunState.ts";
 import { LevelState, difficultyBadges } from "../state/LevelState.ts";
 import { goTo, fadeIn } from "../fx/sceneTransition.ts";
 import { drawVerticalGradient } from "../fx/gradient.ts";
+import { strings } from "../i18n/index.ts";
 
 // Bright, light city by day (better contrast against the car nodes); the
 // same cool dark city from before, by night — matching the day/night split
@@ -51,7 +52,7 @@ export class LevelSelectScene extends Phaser.Scene {
     drawVerticalGradient(this, GameConfig.width, GameConfig.height, CITY_THEME.top, CITY_THEME.bottom, -2);
 
     const back = this.add
-      .text(20, 24, "‹ VOLVER", {
+      .text(20, 24, strings().levelSelect.back, {
         fontFamily: Palette.displayFont,
         fontSize: "16px",
         color: INK_COLOR,
@@ -61,7 +62,7 @@ export class LevelSelectScene extends Phaser.Scene {
     back.on("pointerup", () => goTo(this, "MenuScene"));
 
     this.add
-      .text(GameConfig.width / 2, 24, "ELEGIR NIVEL", {
+      .text(GameConfig.width / 2, 24, strings().levelSelect.title, {
         fontFamily: Palette.displayFont,
         fontSize: "20px",
         color: Palette.textGold,
@@ -254,7 +255,7 @@ export class LevelSelectScene extends Phaser.Scene {
     items.push(icon);
 
     const label = this.add
-      .text(x, y + 40, spot.label, {
+      .text(x, y + 40, strings().landmarks[landmarkLabelKey[spot.key]], {
         fontFamily: Palette.bodyFont,
         fontSize: "9px",
         color: INK_COLOR,

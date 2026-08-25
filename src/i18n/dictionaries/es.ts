@@ -1,0 +1,157 @@
+// Canonical source-of-truth dictionary — every string here is the exact
+// text that used to be hardcoded inline in each scene, unchanged. en.ts and
+// pt.ts are typed against this file's shape (see Dictionary in
+// src/i18n/index.ts), so a missing or extra key in either is a compile
+// error, not a silent gap discovered at runtime.
+export const es = {
+  menu: {
+    title: "SALIDA\nLIBRE",
+    tagline: "Toca un auto para sacarlo.\nVacía el parqueadero antes de quedarte sin vidas.",
+    play: "JUGAR",
+    continueLevel: "CONTINUAR · NIVEL {level}",
+    pickLevel: "Elegir nivel",
+    settings: "⚙ Configuración",
+  },
+  levelSelect: {
+    back: "‹ VOLVER",
+    title: "ELEGIR NIVEL",
+  },
+  landmarks: {
+    parkingLot: "Parqueadero",
+    mall: "Centro comercial",
+    casino: "Casino",
+    gasStation: "Gasolinera",
+    supermarket: "Supermercado",
+    hospital: "Hospital",
+    policeStation: "Estación de policía",
+    park: "Parque",
+    fastFood: "Comida rápida",
+    carWash: "Lavadero de autos",
+  },
+  settings: {
+    title: "CONFIGURACIÓN",
+    hintsTitle: "Ayudas visuales",
+    hintsDesc: "Si te quedás sin tocar nada 15s, los autos con\nsalida libre respiran suavemente para ayudarte.",
+    musicTitle: "Música",
+    musicDesc: "Melodía de fondo, distinta en el menú,\nla cuadrícula y la persecución.",
+    soundTitle: "Sonido",
+    soundDesc: "Efectos cortos: tocar un auto, chocar,\nsacarlo, perder una vida.",
+    languageTitle: "Idioma",
+    on: "ON",
+    off: "OFF",
+    accountTitle: "Cuenta",
+    accountLoading: "Cargando…",
+    accountPreviewWeb: "Vista previa: el enlace de cuenta (Google Play / Game\nCenter) solo funciona en la app instalada, no en el navegador.",
+    accountPreviewWebTap: "Solo disponible en la app instalada — acá es únicamente\nuna vista previa de dónde va a aparecer.",
+    accountConnected: "✅ Conectado como {name}\nTu avance se sincroniza automáticamente.",
+    accountPrompt: "Vinculá tu cuenta de Google Play / Game Center\npara no perder el avance si cambiás de teléfono.",
+    accountLinkButton: "🔗 Vincular",
+    creditsLink: "🎵 Créditos de música",
+    creditsTitle: "Música — OpenGameArt.org (CC-BY 3.0)",
+    creditsClose: "CERRAR",
+    privacyLink: "Privacidad",
+    termsLink: "Términos",
+    adPrivacyOptions: "Opciones de privacidad de anuncios",
+  },
+  tutorialUi: {
+    identifyLabel: "Cómo identificarlo",
+    resolveLabel: "Cómo resolverlo",
+    gotIt: "¡ENTENDIDO!",
+  },
+  tutorial: {
+    movement: {
+      title: "Cómo mover los autos",
+      identify: "Cada auto tiene una dirección fija: solo avanza hacia adelante o hacia atrás, nunca de lado.",
+      resolve: "Tócalo para lanzarlo en esa dirección. Si el camino está libre sale del todo. Si choca con otro auto, no pierdes la vida de una — pasás a modo persecución para intentar salvarlo.",
+    },
+    chase: {
+      title: "Modo persecución",
+      identify: "Entrás a persecución por dos razones: te equivocaste al lanzar un auto (chocó), o tocaste un auto que sale bien pero estaba marcado para llevarte ahí de todos modos.",
+      resolve:
+        "Desliza o toca a los lados para cambiar de carril y esquivar lo que se acerca. Si fue por error: ganar devuelve el auto a la cuadrícula en otro lugar sin perder vida, perder sí cuesta una vida. Si el auto salía bien: ganar lo saca de verdad y suma puntos, perder cuesta una vida igual.",
+    },
+    floors: {
+      title: "Segundo piso",
+      identify: 'El botón dorado "PISO 1/2" arriba de la cuadrícula indica que hay dos niveles de parqueadero.',
+      resolve: "Los autos del piso 2 no salen directo del juego: bajan al piso 1 si la celda de abajo está libre, y ahí los vuelves a tocar para sacarlos.",
+    },
+    broken: {
+      title: "Autos averiados",
+      identify: 'Un auto con la insignia 🔧 (como "0/1") está averiado y no se puede tocar todavía.',
+      resolve: "Sácalo a la persecución para buscar la refacción — al recogerla se repara y ya se puede lanzar normalmente.",
+    },
+    obstacles: {
+      title: "Obstáculos fijos",
+      identify: "Los bloques naranjas con franjas no son autos: son obstáculos permanentes que nunca se mueven.",
+      resolve: "Ningún auto puede atravesarlos — tenlos en cuenta al planear, porque bloquean ese camino para siempre.",
+    },
+    edgeClosures: {
+      title: "Cierre de carriles",
+      identify: "Una franja roja en un borde de la cuadrícula significa que esa salida está cerrada por un momento.",
+      resolve: "Espera a que se abra de nuevo (se alterna cada pocos segundos) antes de lanzar un auto hacia ese lado.",
+    },
+    ambientTraffic: {
+      title: "Tráfico ambiente",
+      identify: "De vez en cuando un auto se mueve solo, sin que lo toques.",
+      resolve: "Es normal en este nivel — aprovéchalo, puede abrirte un camino que antes estaba bloqueado.",
+    },
+    timer: {
+      title: "Cronómetro de nivel",
+      identify: "Una barra de tiempo aparece bajo el marcador de nivel.",
+      resolve: "Si se agota pierdes una vida y el reloj se reinicia — sigue sacando autos para mantenerlo lleno.",
+    },
+    vip: {
+      title: "Auto VIP",
+      identify: "Un auto con la insignia 👑 y un número es VIP: ese número son los toques de otros autos que le quedan antes de perder su bono.",
+      resolve: "Sácalo antes de que llegue a 0 para ganar puntaje extra — si se acaba el tiempo no pasa nada malo, solo pierdes el bono.",
+    },
+    shortcut: {
+      title: "Atajo de pago",
+      identify: 'El botón naranja "⚡ Atajo (–1 vida)" aparece cuando hay varios autos bloqueados.',
+      resolve: "Úsalo para liberar hasta 3 autos bloqueados al instante, a cambio de 1 vida — útil si te quedaste sin movimientos claros.",
+    },
+    curvedRoad: {
+      title: "Carretera curva",
+      identify: "La carretera se mece lentamente de un lado a otro en vez de ir recta.",
+      resolve: "Sigue el movimiento con la mirada — tu carril sigue siendo el mismo, solo cambia visualmente.",
+    },
+    fogRain: {
+      title: "Niebla / lluvia",
+      identify: "Los obstáculos aparecen difuminados cerca del horizonte en vez de verse nítidos de inmediato.",
+      resolve: "Mantente atento apenas se empiecen a distinguir — tardan lo mismo en llegar, solo se ven después.",
+    },
+    crossLaneSwitch: {
+      title: "Cambio de carril",
+      identify: "Algunos peatones o mascotas, después de cruzar y acomodarse en un carril, cambian a otro distinto.",
+      resolve: "No te confíes apenas se acomodan la primera vez — espera a ver en qué carril quedan definitivamente antes de decidir.",
+    },
+  },
+  parking: {
+    brokenToast: "Repáralo primero: busca la refacción en la persecución",
+    floorDownToast: "↓ Bajó al piso 1 — vuelve a tocarlo para sacarlo",
+    shortcutFloorOnlyToast: "El atajo solo funciona en el piso 1",
+    shortcutNotEnoughToast: "No hay suficientes autos bloqueados todavía",
+    levelCompleteTitle: "¡NIVEL {level} SUPERADO!",
+    scoreLabel: "Puntaje: {score}",
+    nextLevel: "SIGUIENTE NIVEL",
+    stopHere: "TERMINAR AQUÍ",
+    floor1: "PISO 1 ▾",
+    floor2: "PISO 2 ▾",
+    shortcutButton: "⚡ Atajo (–1 vida)",
+    levelHud: "Nivel {level} · {done}/{total}",
+  },
+  chase: {
+    repaired: "🔧 ¡Auto reparado!",
+    pieceCollected: "🔧 ¡Pieza recogida!",
+    mistakeBanner: "😬 ¡Sálvalo! Si ganas, vuelve a la cuadrícula sin perder vida",
+    deliveryBanner: "🔧 Busca la pieza de repuesto",
+  },
+  gameOver: {
+    wellDone: "¡BIEN HECHO!",
+    noLives: "SIN VIDAS",
+    carsRemoved: "Autos sacados",
+    reviveButton: "▶ Ver anuncio por 1 vida extra",
+    retryButton: "REINTENTAR NIVEL {level}",
+    menuLink: "Menú / elegir nivel",
+  },
+} as const;

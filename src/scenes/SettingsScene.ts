@@ -8,9 +8,17 @@ import { createButton } from "../ui/Button.ts";
 import { linkAccount, getLinkedPlayerName } from "../cloud/CloudSave.ts";
 import { showPrivacyOptions } from "../ads/AdService.ts";
 import { openLink } from "../util/openLink.ts";
+import { strings, format, getLocale, setLocale, LOCALES, type Locale } from "../i18n/index.ts";
 
-const PRIVACY_URL = "https://namccolombia-hub.github.io/salida-libre/privacy.html";
-const TERMS_URL = "https://namccolombia-hub.github.io/salida-libre/terms.html";
+// Spanish is the canonical/authoritative legal text (privacy.html /
+// terms.html, no suffix); en/pt are informational translations that say so
+// up front and link back to it. See docs/privacy.*.html in the repo.
+const LEGAL_BASE_URL = "https://namccolombia-hub.github.io/salida-libre";
+function legalUrl(doc: "privacy" | "terms"): string {
+  const locale = getLocale();
+  const suffix = locale === "es" ? "" : `.${locale}`;
+  return `${LEGAL_BASE_URL}/${doc}${suffix}.html`;
+}
 
 interface ToggleRow {
   box: Phaser.GameObjects.Rectangle;
@@ -34,7 +42,7 @@ export class SettingsScene extends Phaser.Scene {
     this.rows = [];
 
     const back = this.add
-      .text(20, 24, "‹ VOLVER", {
+      .text(20, 24, strings().levelSelect.back, {
         fontFamily: Palette.bodyFontBold,
         fontStyle: "700",
         fontSize: "16px",
@@ -44,28 +52,30 @@ export class SettingsScene extends Phaser.Scene {
     back.on("pointerup", () => goTo(this, "MenuScene"));
 
     this.add
-      .text(GameConfig.width / 2, 24, "CONFIGURACIÓN", {
+      .text(GameConfig.width / 2, 24, strings().settings.title, {
         fontFamily: Palette.displayFont,
         fontSize: "20px",
         color: Palette.textGold,
       })
       .setOrigin(0.5, 0);
 
-    this.addToggleRow(140, "Ayudas visuales", "Si te quedás sin tocar nada 15s, los autos con\nsalida libre respiran suavemente para ayudarte.", loadHintsEnabled, saveHintsEnabled);
+    this.addToggleRow(140, strings().settings.hintsTitle, strings().settings.hintsDesc, loadHintsEnabled, saveHintsEnabled);
 
-    this.addToggleRow(230, "Música", "Melodía de fondo, distinta en el menú,\nla cuadrícula y la persecución.", loadMusicEnabled, (v) => {
+    this.addToggleRow(230, strings().settings.musicTitle, strings().settings.musicDesc, loadMusicEnabled, (v) => {
       saveMusicEnabled(v);
       setMusicEnabled(v);
     });
 
-    this.addToggleRow(320, "Sonido", "Efectos cortos: tocar un auto, chocar,\nsacarlo, perder una vida.", loadSfxEnabled, saveSfxEnabled);
+    this.addToggleRow(320, strings().settings.soundTitle, strings().settings.soundDesc, loadSfxEnabled, saveSfxEnabled);
+
+    this.addLanguageRow(410);
 
     this.accountStatusText = undefined;
     this.accountButton = undefined;
-    void this.addAccountSection(410);
+    void this.addAccountSection(500);
 
     const creditsLink = this.add
-      .text(GameConfig.width / 2, 500, "🎵 Créditos de música", {
+      .text(GameConfig.width / 2, 590, strings().settings.creditsLink, {
         fontFamily: Palette.bodyFont,
         fontSize: "13px",
         color: "#8a909c",
@@ -75,17 +85,17 @@ export class SettingsScene extends Phaser.Scene {
     creditsLink.on("pointerup", () => this.showCreditsModal());
 
     const privacyLink = this.add
-      .text(GameConfig.width / 2 - 60, 528, "Privacidad", {
+      .text(GameConfig.width / 2 - 60, 618, strings().settings.privacyLink, {
         fontFamily: Palette.bodyFont,
         fontSize: "13px",
         color: "#8a909c",
       })
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true });
-    privacyLink.on("pointerup", () => void openLink(PRIVACY_URL));
+    privacyLink.on("pointerup", () => void openLink(legalUrl("privacy")));
 
     this.add
-      .text(GameConfig.width / 2, 528, "·", {
+      .text(GameConfig.width / 2, 618, "·", {
         fontFamily: Palette.bodyFont,
         fontSize: "13px",
         color: "#8a909c",
@@ -93,20 +103,20 @@ export class SettingsScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     const termsLink = this.add
-      .text(GameConfig.width / 2 + 55, 528, "Términos", {
+      .text(GameConfig.width / 2 + 55, 618, strings().settings.termsLink, {
         fontFamily: Palette.bodyFont,
         fontSize: "13px",
         color: "#8a909c",
       })
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true });
-    termsLink.on("pointerup", () => void openLink(TERMS_URL));
+    termsLink.on("pointerup", () => void openLink(legalUrl("terms")));
 
     // AdMob policy requires the consent choice stay reachable after first
     // launch, not just on the initial EU/UK prompt — this is that entry
     // point. It's a no-op outside the EU/UK (nothing to show).
     const privacyOptionsLink = this.add
-      .text(GameConfig.width / 2, 556, "Opciones de privacidad de anuncios", {
+      .text(GameConfig.width / 2, 646, strings().settings.adPrivacyOptions, {
         fontFamily: Palette.bodyFont,
         fontSize: "12px",
         color: "#8a909c",
@@ -114,6 +124,65 @@ export class SettingsScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true });
     privacyOptionsLink.on("pointerup", () => void showPrivacyOptions());
+  }
+
+  // Each language shows its own native autonym regardless of the currently
+  // active locale (standard language-switcher convention) — not part of the
+  // translated dictionaries since it doesn't change with them.
+  private static readonly LANGUAGE_NAMES: Record<Locale, string> = {
+    es: "Español",
+    en: "English",
+    pt: "Português",
+  };
+
+  private addLanguageRow(rowY: number): void {
+    this.add
+      .text(24, rowY - 14, strings().settings.languageTitle, {
+        fontFamily: Palette.bodyFontBold,
+        fontStyle: "700",
+        fontSize: "17px",
+        color: Palette.textLight,
+      })
+      .setOrigin(0, 0);
+
+    const pillWidth = 84;
+    const gap = 8;
+    const totalWidth = pillWidth * LOCALES.length + gap * (LOCALES.length - 1);
+    let x = GameConfig.width - 24 - totalWidth + pillWidth / 2;
+
+    const pills: { box: Phaser.GameObjects.Rectangle; label: Phaser.GameObjects.Text; locale: Locale }[] = [];
+    const refresh = () => {
+      const active = getLocale();
+      for (const pill of pills) {
+        const isActive = pill.locale === active;
+        pill.box.setFillStyle(isActive ? Palette.laneGold : Palette.bgAsphaltLight, 1);
+        pill.label.setColor(isActive ? "#1c1f26" : Palette.textLight);
+      }
+    };
+
+    for (const locale of LOCALES) {
+      const box = this.add
+        .rectangle(x, rowY + 4, pillWidth, 32, Palette.bgAsphaltLight, 1)
+        .setStrokeStyle(2, Palette.wallSolid, 1)
+        .setInteractive({ useHandCursor: true });
+      const label = this.add
+        .text(x, rowY + 4, SettingsScene.LANGUAGE_NAMES[locale], {
+          fontFamily: Palette.bodyFontBold,
+          fontStyle: "700",
+          fontSize: "12px",
+          color: Palette.textLight,
+        })
+        .setOrigin(0.5);
+      box.on("pointerup", () => {
+        if (getLocale() === locale) return;
+        setLocale(locale);
+        this.scene.restart();
+      });
+      pills.push({ box, label, locale });
+      x += pillWidth + gap;
+    }
+
+    refresh();
   }
 
   // CC-BY 3.0 requires crediting each author somewhere the player actually
@@ -125,7 +194,7 @@ export class SettingsScene extends Phaser.Scene {
     panel.setStrokeStyle(2, Palette.wallSolid, 1);
 
     const title = this.add
-      .text(GameConfig.width / 2, GameConfig.height / 2 - 210, "Música — OpenGameArt.org (CC-BY 3.0)", {
+      .text(GameConfig.width / 2, GameConfig.height / 2 - 210, strings().settings.creditsTitle, {
         fontFamily: Palette.bodyFontBold,
         fontStyle: "700",
         fontSize: "13px",
@@ -159,7 +228,7 @@ export class SettingsScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(42);
 
-    const closeButton = createButton(this, GameConfig.width / 2, GameConfig.height / 2 + 190, 160, 44, "CERRAR", { fontSize: "14px" });
+    const closeButton = createButton(this, GameConfig.width / 2, GameConfig.height / 2 + 190, 160, 44, strings().settings.creditsClose, { fontSize: "14px" });
     closeButton.container.setDepth(42);
     closeButton.on("pointerup", () => {
       [overlay, panel, title, body, closeButton.container].forEach((o) => o.destroy());
@@ -172,7 +241,7 @@ export class SettingsScene extends Phaser.Scene {
   // outside a native build. Now it shows where it lives and says so plainly.
   private async addAccountSection(rowY: number): Promise<void> {
     this.add
-      .text(24, rowY - 14, "Cuenta", {
+      .text(24, rowY - 14, strings().settings.accountTitle, {
         fontFamily: Palette.bodyFontBold,
         fontStyle: "700",
         fontSize: "17px",
@@ -181,7 +250,7 @@ export class SettingsScene extends Phaser.Scene {
       .setOrigin(0, 0);
 
     this.accountStatusText = this.add
-      .text(24, rowY + 12, "Cargando…", {
+      .text(24, rowY + 12, strings().settings.accountLoading, {
         fontFamily: Palette.bodyFont,
         fontSize: "12px",
         color: "#8a909c",
@@ -190,12 +259,12 @@ export class SettingsScene extends Phaser.Scene {
       })
       .setOrigin(0, 0);
 
-    this.accountButton = createButton(this, GameConfig.width - 90, rowY + 4, 140, 40, "🔗 Vincular", { fontSize: "13px" });
+    this.accountButton = createButton(this, GameConfig.width - 90, rowY + 4, 140, 40, strings().settings.accountLinkButton, { fontSize: "13px" });
 
     if (!Capacitor.isNativePlatform()) {
-      this.accountStatusText.setText("Vista previa: el enlace de cuenta (Google Play / Game\nCenter) solo funciona en la app instalada, no en el navegador.");
+      this.accountStatusText.setText(strings().settings.accountPreviewWeb);
       this.accountButton.on("pointerup", () => {
-        this.accountStatusText?.setText("Solo disponible en la app instalada — acá es únicamente\nuna vista previa de dónde va a aparecer.");
+        this.accountStatusText?.setText(strings().settings.accountPreviewWebTap);
       });
       return;
     }
@@ -211,10 +280,10 @@ export class SettingsScene extends Phaser.Scene {
   private refreshAccountUI(signedIn: boolean, displayName: string | null): void {
     if (!this.accountStatusText) return;
     if (signedIn && displayName) {
-      this.accountStatusText.setText(`✅ Conectado como ${displayName}\nTu avance se sincroniza automáticamente.`);
+      this.accountStatusText.setText(format(strings().settings.accountConnected, { name: displayName }));
       this.accountButton?.container.setVisible(false);
     } else {
-      this.accountStatusText.setText("Vinculá tu cuenta de Google Play / Game Center\npara no perder el avance si cambiás de teléfono.");
+      this.accountStatusText.setText(strings().settings.accountPrompt);
       this.accountButton?.container.setVisible(true);
     }
   }
@@ -265,7 +334,7 @@ export class SettingsScene extends Phaser.Scene {
   private refreshRow(row: ToggleRow): void {
     const enabled = row.get();
     row.box.setFillStyle(enabled ? Palette.laneGold : Palette.bgAsphaltLight, 1);
-    row.label.setText(enabled ? "ON" : "OFF");
+    row.label.setText(enabled ? strings().settings.on : strings().settings.off);
     row.label.setColor(enabled ? "#1c1f26" : Palette.textLight);
   }
 }

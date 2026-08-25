@@ -13,6 +13,7 @@ import { hapticImpact, hapticSuccess, hapticError } from "../fx/haptics.ts";
 import { goTo, fadeIn } from "../fx/sceneTransition.ts";
 import { createButton } from "../ui/Button.ts";
 import { showTutorialQueue } from "../ui/TutorialOverlay.ts";
+import { strings, format } from "../i18n/index.ts";
 
 type Edge = "top" | "bottom" | "left" | "right";
 
@@ -343,7 +344,7 @@ export class ParkingScene extends Phaser.Scene {
         playTap();
         this.resetIdle();
         if (car.broken) {
-          this.showToast("Repáralo primero: busca la refacción en la persecución");
+          this.showToast(strings().parking.brokenToast);
           return;
         }
         this.tryLaunch(car);
@@ -516,7 +517,7 @@ export class ParkingScene extends Phaser.Scene {
           playExit();
           sprite.destroy();
           this.carSprites.delete(car.id);
-          this.showToast("↓ Bajó al piso 1 — vuelve a tocarlo para sacarlo");
+          this.showToast(strings().parking.floorDownToast);
           LevelState.replenish();
           this.refreshHud();
           this.syncSprites(true);
@@ -657,7 +658,7 @@ export class ParkingScene extends Phaser.Scene {
     panel.setStrokeStyle(2, Palette.wallSolid, 1);
 
     const title = this.add
-      .text(GameConfig.width / 2, panelY - 90, `¡NIVEL ${LevelState.level} SUPERADO!`, {
+      .text(GameConfig.width / 2, panelY - 90, format(strings().parking.levelCompleteTitle, { level: LevelState.level }), {
         fontFamily: Palette.displayFont,
         fontSize: "22px",
         color: Palette.textGold,
@@ -668,7 +669,7 @@ export class ParkingScene extends Phaser.Scene {
       .setDepth(42);
 
     const subtitle = this.add
-      .text(GameConfig.width / 2, panelY - 40, `Puntaje: ${RunState.score}`, {
+      .text(GameConfig.width / 2, panelY - 40, format(strings().parking.scoreLabel, { score: RunState.score }), {
         fontFamily: Palette.bodyFont,
         fontSize: "18px",
         color: Palette.textLight,
@@ -676,10 +677,10 @@ export class ParkingScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(42);
 
-    const nextButton = createButton(this, GameConfig.width / 2, panelY + 20, 240, 56, "SIGUIENTE NIVEL", { fontSize: "17px" });
+    const nextButton = createButton(this, GameConfig.width / 2, panelY + 20, 240, 56, strings().parking.nextLevel, { fontSize: "17px" });
     nextButton.container.setDepth(42);
 
-    const stopButton = createButton(this, GameConfig.width / 2, panelY + 88, 240, 48, "TERMINAR AQUÍ", {
+    const stopButton = createButton(this, GameConfig.width / 2, panelY + 88, 240, 48, strings().parking.stopHere, {
       fillColor: Palette.bgAsphalt,
       textColor: Palette.textLight,
       strokeColor: Palette.wallSolid,
@@ -763,7 +764,7 @@ export class ParkingScene extends Phaser.Scene {
     }
 
     if (this.shortcutRowY !== undefined) {
-      this.shortcutButton = createButton(this, GameConfig.width / 2, this.shortcutRowY + 13, 190, 26, "⚡ Atajo (–1 vida)", {
+      this.shortcutButton = createButton(this, GameConfig.width / 2, this.shortcutRowY + 13, 190, 26, strings().parking.shortcutButton, {
         fillColor: 0xff8a3d,
         fontSize: "12px",
       });
@@ -792,12 +793,12 @@ export class ParkingScene extends Phaser.Scene {
     if (this.busy) return;
     this.resetIdle();
     if (LevelState.activeFloor !== 0) {
-      this.showToast("El atajo solo funciona en el piso 1");
+      this.showToast(strings().parking.shortcutFloorOnlyToast);
       return;
     }
     const blockedCount = LevelState.cars.filter((c) => !c.broken && !LevelState.pathClear(c)).length;
     if (blockedCount < 2) {
-      this.showToast("No hay suficientes autos bloqueados todavía");
+      this.showToast(strings().parking.shortcutNotEnoughToast);
       return;
     }
 
@@ -847,8 +848,8 @@ export class ParkingScene extends Phaser.Scene {
       this.heartIcons[i].setColor(i < RunState.lives ? Palette.textDanger : "#3a3f4b");
     }
     this.scoreText.setText(`${RunState.score}`);
-    this.levelText.setText(`Nivel ${LevelState.level} · ${LevelState.clearedCount}/${LevelState.totalQuota}`);
-    this.floorButton?.label.setText(LevelState.activeFloor === 0 ? "PISO 1 ▾" : "PISO 2 ▾");
+    this.levelText.setText(format(strings().parking.levelHud, { level: LevelState.level, done: LevelState.clearedCount, total: LevelState.totalQuota }));
+    this.floorButton?.label.setText(LevelState.activeFloor === 0 ? strings().parking.floor1 : strings().parking.floor2);
   }
 
   private drawEdgeClosure(): void {

@@ -8,6 +8,7 @@ import { burst, confetti, showFloatingText } from "../fx/effects.ts";
 import { hapticImpact, hapticSuccess, hapticError } from "../fx/haptics.ts";
 import { goTo, fadeIn } from "../fx/sceneTransition.ts";
 import { showTutorialQueue } from "../ui/TutorialOverlay.ts";
+import { strings } from "../i18n/index.ts";
 
 type ObstacleKind = "car" | "bus" | "pedestrian" | "cone" | "pet" | "part";
 type LaneIndex = 0 | 1 | 2;
@@ -620,9 +621,9 @@ export class ChaseScene extends Phaser.Scene {
     if (repaired) {
       // Fully repaired, not just one more part — a bigger celebration.
       confetti(this, x, y);
-      this.deliveryHudText?.setText("🔧 ¡Auto reparado!");
+      this.deliveryHudText?.setText(strings().chase.repaired);
     } else {
-      this.deliveryHudText?.setText("🔧 ¡Pieza recogida!");
+      this.deliveryHudText?.setText(strings().chase.pieceCollected);
     }
   }
 
@@ -778,7 +779,7 @@ export class ChaseScene extends Phaser.Scene {
     let bannerY = 40;
     if (this.mistake) {
       this.mistakeHudText = this.add
-        .text(GameConfig.width / 2, bannerY, "😬 ¡Sálvalo! Si ganas, vuelve a la cuadrícula sin perder vida", {
+        .text(GameConfig.width / 2, bannerY, strings().chase.mistakeBanner, {
           fontFamily: Palette.displayFont,
           fontSize: "12px",
           color: "#1c1f26",
@@ -796,7 +797,7 @@ export class ChaseScene extends Phaser.Scene {
     this.deliveryHudText = undefined;
     if (this.isDeliveryChase) {
       this.deliveryHudText = this.add
-        .text(GameConfig.width / 2, bannerY, "🔧 Busca la pieza de repuesto", {
+        .text(GameConfig.width / 2, bannerY, strings().chase.deliveryBanner, {
           fontFamily: Palette.displayFont,
           fontSize: "13px",
           color: "#1c1f26",

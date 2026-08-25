@@ -8,6 +8,7 @@ import { playGameOver, playLevelComplete } from "../audio/sfx.ts";
 import { hapticSuccess, hapticError } from "../fx/haptics.ts";
 import { showRewardedAd } from "../ads/AdService.ts";
 import { Capacitor } from "@capacitor/core";
+import { strings, format } from "../i18n/index.ts";
 
 interface GameOverData {
   reason?: "lives" | "finished";
@@ -38,7 +39,7 @@ export class GameOverScene extends Phaser.Scene {
     }
 
     this.add
-      .text(GameConfig.width / 2, 220, finished ? "¡BIEN HECHO!" : "SIN VIDAS", {
+      .text(GameConfig.width / 2, 220, finished ? strings().gameOver.wellDone : strings().gameOver.noLives, {
         fontFamily: Palette.displayFont,
         fontSize: "44px",
         color: finished ? Palette.textGold : Palette.textDanger,
@@ -46,7 +47,7 @@ export class GameOverScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(GameConfig.width / 2, 300, "Autos sacados", {
+      .text(GameConfig.width / 2, 300, strings().gameOver.carsRemoved, {
         fontFamily: Palette.bodyFont,
         fontSize: "20px",
         color: Palette.textLight,
@@ -65,7 +66,7 @@ export class GameOverScene extends Phaser.Scene {
     const canRevive = !finished && Capacitor.isNativePlatform();
 
     if (canRevive) {
-      const reviveButton = createButton(this, GameConfig.width / 2, 410, 280, 56, "▶ Ver anuncio por 1 vida extra", {
+      const reviveButton = createButton(this, GameConfig.width / 2, 410, 280, 56, strings().gameOver.reviveButton, {
         fillColor: Palette.laneGold,
         fontSize: "14px",
       });
@@ -78,7 +79,7 @@ export class GameOverScene extends Phaser.Scene {
     }
 
     const retryY = canRevive ? 490 : 480;
-    const button = createButton(this, GameConfig.width / 2, retryY, 240, 64, `REINTENTAR NIVEL ${retryLevel}`, { fontSize: "16px" });
+    const button = createButton(this, GameConfig.width / 2, retryY, 240, 64, format(strings().gameOver.retryButton, { level: retryLevel }), { fontSize: "16px" });
     button.on("pointerup", () => {
       RunState.reset();
       LevelState.startNewRun(retryLevel);
@@ -86,7 +87,7 @@ export class GameOverScene extends Phaser.Scene {
     });
 
     const menuLink = this.add
-      .text(GameConfig.width / 2, canRevive ? 558 : 548, "Menú / elegir nivel", {
+      .text(GameConfig.width / 2, canRevive ? 558 : 548, strings().gameOver.menuLink, {
         fontFamily: Palette.bodyFont,
         fontSize: "16px",
         color: Palette.textLight,
