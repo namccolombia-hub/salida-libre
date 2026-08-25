@@ -9,13 +9,6 @@ import { ParkingScene } from "./scenes/ParkingScene.ts";
 import { ChaseScene } from "./scenes/ChaseScene.ts";
 import { GameOverScene } from "./scenes/GameOverScene.ts";
 import { SettingsScene } from "./scenes/SettingsScene.ts";
-import { resumeIfPending } from "./audio/music.ts";
-
-// Mobile browsers suspend AudioContext until a user gesture. sfx.ts already
-// resumes it lazily on each SFX call, but the very first bit of scheduled
-// music can start before any tap happens — this catches that first gesture
-// once, game-wide, so pending music becomes audible right away.
-document.addEventListener("pointerdown", resumeIfPending, { once: true });
 
 new Phaser.Game({
   type: Phaser.AUTO,

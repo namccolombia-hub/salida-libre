@@ -14,7 +14,7 @@ export class MenuScene extends Phaser.Scene {
 
   create(): void {
     fadeIn(this);
-    playMusic("menu");
+    playMusic(this, "menu");
 
     // Day backgrounds are light, so the white/gray text from the night
     // theme would wash out — swap to a dark ink for everything but the

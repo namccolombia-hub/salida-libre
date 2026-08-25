@@ -114,7 +114,7 @@ export class ParkingScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(Palette.bgAsphalt);
     this.cameras.main.zoom = 1;
     fadeIn(this);
-    playMusic("parking");
+    playMusic(this, "parking");
     this.busy = false;
     this.carSprites.clear();
     this.obstacleSprites = [];

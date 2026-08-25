@@ -58,6 +58,66 @@ export class SettingsScene extends Phaser.Scene {
     this.accountStatusText = undefined;
     this.accountButton = undefined;
     void this.addAccountSection(410);
+
+    const creditsLink = this.add
+      .text(GameConfig.width / 2, 500, "🎵 Créditos de música", {
+        fontFamily: Palette.bodyFont,
+        fontSize: "13px",
+        color: "#8a909c",
+      })
+      .setOrigin(0.5)
+      .setInteractive({ useHandCursor: true });
+    creditsLink.on("pointerup", () => this.showCreditsModal());
+  }
+
+  // CC-BY 3.0 requires crediting each author somewhere the player actually
+  // sees — a repo file alone doesn't satisfy that. See CREDITS.md for the
+  // same list with links.
+  private showCreditsModal(): void {
+    const overlay = this.add.rectangle(0, 0, GameConfig.width, GameConfig.height, 0x000000, 0.75).setOrigin(0).setDepth(40);
+    const panel = this.add.rectangle(GameConfig.width / 2, GameConfig.height / 2, 400, 460, Palette.bgAsphaltLight, 1).setDepth(41);
+    panel.setStrokeStyle(2, Palette.wallSolid, 1);
+
+    const title = this.add
+      .text(GameConfig.width / 2, GameConfig.height / 2 - 210, "Música — OpenGameArt.org (CC-BY 3.0)", {
+        fontFamily: Palette.bodyFontBold,
+        fontStyle: "700",
+        fontSize: "13px",
+        color: Palette.textGold,
+        align: "center",
+        wordWrap: { width: 360 },
+      })
+      .setOrigin(0.5)
+      .setDepth(42);
+
+    const credits = [
+      ["Jump and Run - Tropics", "bart"],
+      ["Puzzle Tune 1 (a/b)", "rezoner"],
+      ["MML Su Turno", "Patrick de Arteaga"],
+      ["Chill Jungle Ambient", "Tausdei"],
+      ["Bouncing Baal", "FoxSynergy"],
+      ["At last", "Android128"],
+      ["Space Chase", "Szymon Matuszewski"],
+    ]
+      .map(([track, author]) => `${track} — ${author}`)
+      .join("\n");
+
+    const body = this.add
+      .text(GameConfig.width / 2, GameConfig.height / 2 - 40, credits, {
+        fontFamily: Palette.bodyFont,
+        fontSize: "13px",
+        color: Palette.textLight,
+        align: "center",
+        lineSpacing: 10,
+      })
+      .setOrigin(0.5)
+      .setDepth(42);
+
+    const closeButton = createButton(this, GameConfig.width / 2, GameConfig.height / 2 + 190, 160, 44, "CERRAR", { fontSize: "14px" });
+    closeButton.container.setDepth(42);
+    closeButton.on("pointerup", () => {
+      [overlay, panel, title, body, closeButton.container].forEach((o) => o.destroy());
+    });
   }
 
   // Always visible, even on web — real sign-in only works in a native build

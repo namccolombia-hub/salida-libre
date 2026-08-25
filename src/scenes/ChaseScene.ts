@@ -158,7 +158,7 @@ export class ChaseScene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor(Palette.bgAsphalt);
     fadeIn(this);
-    playMusic("chase");
+    playMusic(this, "chase");
     this.buildSky();
     this.buildParallax();
 

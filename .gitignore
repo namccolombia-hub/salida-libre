@@ -18,6 +18,10 @@ dist-ssr
 # Stray root-level screenshots from ad-hoc Playwright test scripts
 /*.png
 
+# Raw downloaded audio candidates — staging area, not the final processed
+# assets (those land in public/assets/audio/ once picked and converted)
+/audio-source/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

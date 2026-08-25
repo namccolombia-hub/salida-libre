@@ -28,6 +28,16 @@ export class BootScene extends Phaser.Scene {
     LANDMARK_KEYS.forEach((key) => {
       this.load.image(`landmark-${key}`, `/assets/landmarks/${key}.png`);
     });
+
+    // Music — CC-BY 3.0 tracks from OpenGameArt.org (see CREDITS.md).
+    this.load.audio("music-menu-tropics", "/assets/audio/menu/menu-tropics.mp3");
+    this.load.audio("music-grid-puzzle-1a", "/assets/audio/grid/puzzle-1-a.mp3");
+    this.load.audio("music-grid-puzzle-1b", "/assets/audio/grid/puzzle-1-b.mp3");
+    this.load.audio("music-grid-su-turno", "/assets/audio/grid/su-turno.mp3");
+    this.load.audio("music-grid-chill-jungle", "/assets/audio/grid/chill-jungle-ambient.mp3");
+    this.load.audio("music-chase-bouncing-baal", "/assets/audio/chase/bouncing-baal.mp3");
+    this.load.audio("music-chase-at-last", "/assets/audio/chase/at-last.mp3");
+    this.load.audio("music-chase-space-chase", "/assets/audio/chase/space-chase.mp3");
   }
 
   create(): void {
