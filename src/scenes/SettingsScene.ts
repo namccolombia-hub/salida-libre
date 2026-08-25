@@ -6,6 +6,11 @@ import { goTo, fadeIn } from "../fx/sceneTransition.ts";
 import { setEnabled as setMusicEnabled } from "../audio/music.ts";
 import { createButton } from "../ui/Button.ts";
 import { linkAccount, getLinkedPlayerName } from "../cloud/CloudSave.ts";
+import { showPrivacyOptions } from "../ads/AdService.ts";
+import { openLink } from "../util/openLink.ts";
+
+const PRIVACY_URL = "https://namccolombia-hub.github.io/salida-libre/privacy.html";
+const TERMS_URL = "https://namccolombia-hub.github.io/salida-libre/terms.html";
 
 interface ToggleRow {
   box: Phaser.GameObjects.Rectangle;
@@ -68,6 +73,47 @@ export class SettingsScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true });
     creditsLink.on("pointerup", () => this.showCreditsModal());
+
+    const privacyLink = this.add
+      .text(GameConfig.width / 2 - 60, 528, "Privacidad", {
+        fontFamily: Palette.bodyFont,
+        fontSize: "13px",
+        color: "#8a909c",
+      })
+      .setOrigin(0.5)
+      .setInteractive({ useHandCursor: true });
+    privacyLink.on("pointerup", () => void openLink(PRIVACY_URL));
+
+    this.add
+      .text(GameConfig.width / 2, 528, "·", {
+        fontFamily: Palette.bodyFont,
+        fontSize: "13px",
+        color: "#8a909c",
+      })
+      .setOrigin(0.5);
+
+    const termsLink = this.add
+      .text(GameConfig.width / 2 + 55, 528, "Términos", {
+        fontFamily: Palette.bodyFont,
+        fontSize: "13px",
+        color: "#8a909c",
+      })
+      .setOrigin(0.5)
+      .setInteractive({ useHandCursor: true });
+    termsLink.on("pointerup", () => void openLink(TERMS_URL));
+
+    // AdMob policy requires the consent choice stay reachable after first
+    // launch, not just on the initial EU/UK prompt — this is that entry
+    // point. It's a no-op outside the EU/UK (nothing to show).
+    const privacyOptionsLink = this.add
+      .text(GameConfig.width / 2, 556, "Opciones de privacidad de anuncios", {
+        fontFamily: Palette.bodyFont,
+        fontSize: "12px",
+        color: "#8a909c",
+      })
+      .setOrigin(0.5)
+      .setInteractive({ useHandCursor: true });
+    privacyOptionsLink.on("pointerup", () => void showPrivacyOptions());
   }
 
   // CC-BY 3.0 requires crediting each author somewhere the player actually

@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Términos de Salida Libre</title>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap");
+
+  :root {
+    --paper: #faf7f2;
+    --paper-alt: #f3ede3;
+    --ink: #2a2420;
+    --ink-soft: #6b6055;
+    --ink-faint: #948a7d;
+    --accent: #b8571f;
+    --accent-soft: #e0a172;
+    --line: #e4dcd1;
+    --surface: #ffffff;
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --sans: "Public Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 56px 24px 96px; }
+
+  header.letterhead {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--surface);
+    padding: 32px 32px 28px;
+    margin-bottom: 40px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(28px, 5vw, 38px);
+    line-height: 1.15;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+
+  .letterhead dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 4px 14px;
+    margin: 18px 0 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .letterhead dt { font-weight: 600; color: var(--ink); }
+  .letterhead dd { margin: 0; font-variant-numeric: tabular-nums; }
+
+  nav.toc {
+    background: var(--paper-alt);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+  }
+  nav.toc p.label {
+    margin: 0 0 10px;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+  }
+  nav.toc ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    columns: 2;
+    column-gap: 24px;
+  }
+  nav.toc li { break-inside: avoid; margin-bottom: 6px; font-size: 14px; }
+  nav.toc a { color: var(--ink-soft); text-decoration: none; }
+  nav.toc a:hover { color: var(--accent); text-decoration: underline; }
+
+  article { counter-reset: section; }
+
+  section.clause {
+    counter-increment: section;
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+    scroll-margin-top: 24px;
+  }
+  section.clause:first-of-type { border-top: none; padding-top: 0; }
+
+  h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 22px;
+    margin: 0 0 14px;
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    text-wrap: balance;
+  }
+  h2::before {
+    content: counter(section);
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    border: 1px solid var(--accent-soft);
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transform: translateY(-1px);
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 15px;
+    margin: 20px 0 8px;
+    color: var(--ink);
+  }
+
+  p { margin: 0 0 14px; max-width: 66ch; color: var(--ink); }
+  section.clause p:last-child { margin-bottom: 0; }
+
+  ul, ol.plain { margin: 0 0 14px; padding-left: 22px; max-width: 62ch; }
+  ul li, ol.plain li { margin-bottom: 6px; }
+
+  .callout {
+    background: var(--paper-alt);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+  }
+  .callout strong { color: var(--ink); }
+
+  footer {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-faint);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 520px) {
+    .wrap { padding: 32px 16px 64px; }
+    header.letterhead { padding: 24px 20px; }
+    nav.toc ol { columns: 1; }
+    .letterhead dl { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="letterhead">
+    <p class="eyebrow">Documento legal</p>
+    <h1>Términos y Condiciones de Salida Libre</h1>
+    <dl>
+      <dt>Aplicación</dt><dd>Salida Libre</dd>
+      <dt>Responsable</dt><dd>Sebastián Serrano — Namc Colombia</dd>
+      <dt>Contacto</dt><dd><a href="mailto:namccolombia@gmail.com">namccolombia@gmail.com</a></dd>
+      <dt>Última actualización</dt><dd>23 de agosto de 2026</dd>
+    </dl>
+  </header>
+
+  <nav class="toc" aria-label="Tabla de contenidos">
+    <p class="label">En este documento</p>
+    <ol>
+      <li><a href="#aceptacion">Aceptación de los términos</a></li>
+      <li><a href="#descripcion">Descripción del servicio</a></li>
+      <li><a href="#licencia">Licencia de uso</a></li>
+      <li><a href="#cuenta">Cuenta vinculada opcional</a></li>
+      <li><a href="#publicidad">Publicidad y compras</a></li>
+      <li><a href="#conducta">Uso aceptable</a></li>
+      <li><a href="#propiedad">Propiedad intelectual</a></li>
+      <li><a href="#garantia">Sin garantía y limitación de responsabilidad</a></li>
+      <li><a href="#terceros">Servicios y tiendas de terceros</a></li>
+      <li><a href="#terminacion">Terminación</a></li>
+      <li><a href="#cambios">Cambios a estos términos</a></li>
+      <li><a href="#ley">Ley aplicable</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ol>
+  </nav>
+
+  <article>
+    <section class="clause" id="aceptacion">
+      <h2>Aceptación de los términos</h2>
+      <p>Al descargar, instalar o usar Salida Libre ("la app", "el juego") aceptás estos Términos y Condiciones en su totalidad. Si no estás de acuerdo con alguna parte, no debés usar la app. Estos términos se complementan con nuestra <a href="./privacy.html">Política de Privacidad</a>, que describe qué datos se tratan y cómo.</p>
+    </section>
+
+    <section class="clause" id="descripcion">
+      <h2>Descripción del servicio</h2>
+      <p>Salida Libre es un juego de rompecabezas de un solo jugador (mover autos para liberar la salida) con un modo de persecución en primera persona, disponible gratuitamente y financiado mediante publicidad. La app no requiere conexión a internet para jugar los niveles, salvo para mostrar anuncios y, si elegís usarla, la función opcional de cuenta vinculada.</p>
+    </section>
+
+    <section class="clause" id="licencia">
+      <h2>Licencia de uso</h2>
+      <p>Te otorgamos una licencia personal, no exclusiva, intransferible y revocable para instalar y usar Salida Libre en tus propios dispositivos, exclusivamente para tu entretenimiento personal y no comercial. Esta licencia no te transfiere ningún derecho de propiedad sobre la app, su código o sus contenidos.</p>
+    </section>
+
+    <section class="clause" id="cuenta">
+      <h2>Cuenta vinculada opcional</h2>
+      <p>Podés, de forma opcional, vincular tu cuenta de Google Play Games o Game Center para sincronizar tu progreso entre dispositivos. Esa vinculación está sujeta también a los términos de servicio de Google o Apple respectivamente, y sos responsable de mantener la seguridad de tu propia cuenta de esas plataformas. No creamos ni administramos ninguna cuenta propia de usuario.</p>
+    </section>
+
+    <section class="clause" id="publicidad">
+      <h2>Publicidad y compras</h2>
+      <p>Salida Libre muestra anuncios de terceros (video recompensado e intersticiales) a través de Google AdMob. No controlamos el contenido específico de cada anuncio mostrado por la red publicitaria. Al momento de esta versión, <strong>la app no ofrece compras dentro de la aplicación</strong>; si eso cambia en el futuro, estos términos se actualizarán para reflejarlo antes de habilitar esa función.</p>
+    </section>
+
+    <section class="clause" id="conducta">
+      <h2>Uso aceptable</h2>
+      <p>Al usar la app, aceptás no:</p>
+      <ul>
+        <li>Realizar ingeniería inversa, descompilar o modificar la app fuera de lo permitido por la ley aplicable.</li>
+        <li>Explotar errores o fallas técnicas de forma que perjudique el servicio para otros usuarios.</li>
+        <li>Usar la app con fines distintos al entretenimiento personal, incluyendo cualquier uso comercial no autorizado.</li>
+        <li>Intentar acceder sin autorización a los sistemas que dan soporte a la app o a las cuentas de otros usuarios.</li>
+      </ul>
+    </section>
+
+    <section class="clause" id="propiedad">
+      <h2>Propiedad intelectual</h2>
+      <p>El código, diseño, arte, sonido y demás contenidos originales de Salida Libre son propiedad de Sebastián Serrano (Namc Colombia), salvo el material de terceros usado bajo sus propias licencias. Todos los derechos no expresamente concedidos en estos términos quedan reservados.</p>
+    </section>
+
+    <section class="clause" id="garantia">
+      <h2>Sin garantía y limitación de responsabilidad</h2>
+      <p>La app se ofrece "tal cual" y "según disponibilidad", sin garantías de ningún tipo, expresas o implícitas, incluyendo garantías de funcionamiento ininterrumpido o libre de errores. En la máxima medida permitida por la ley, Sebastián Serrano / Namc Colombia no será responsable por daños indirectos, incidentales o consecuentes derivados del uso o la imposibilidad de uso de la app.</p>
+    </section>
+
+    <section class="clause" id="terceros">
+      <h2>Servicios y tiendas de terceros</h2>
+      <p>La app se distribuye a través de tiendas de aplicaciones de terceros (App Store, Google Play) y utiliza servicios de terceros (Google AdMob, Google Play Games Services, Apple Game Center), cada uno sujeto a sus propios términos. Reconocés que:</p>
+      <ul>
+        <li>La tienda de aplicaciones correspondiente no es responsable de la app ni de su contenido, y no tiene obligación alguna de brindarte soporte o mantenimiento respecto de ella.</li>
+        <li>En caso de incumplimiento de estos términos, la tienda de aplicaciones puede tener derecho a hacer valer estos términos frente a vos como tercero beneficiario, según sus propias políticas.</li>
+        <li>Somos responsables de la app frente a vos en la medida descrita en este documento, no la tienda de aplicaciones.</li>
+      </ul>
+    </section>
+
+    <section class="clause" id="terminacion">
+      <h2>Terminación</h2>
+      <p>Podés dejar de usar la app y desinstalarla en cualquier momento. Podemos suspender o discontinuar la app, en todo o en parte, con o sin aviso, sin que ello genere derecho a compensación alguna, salvo lo que exija la ley aplicable.</p>
+    </section>
+
+    <section class="clause" id="cambios">
+      <h2>Cambios a estos términos</h2>
+      <p>Podemos actualizar estos términos cuando cambien las funciones de la app. La fecha de "Última actualización" en el encabezado siempre refleja la versión vigente. El uso continuado de la app después de un cambio implica la aceptación de los nuevos términos.</p>
+    </section>
+
+    <section class="clause" id="ley">
+      <h2>Ley aplicable</h2>
+      <p>Estos términos se rigen por las leyes de la República de Colombia, sin perjuicio de los derechos que, como consumidor, puedas tener bajo las leyes de tu país de residencia.</p>
+    </section>
+
+    <section class="clause" id="contacto">
+      <h2>Contacto</h2>
+      <p>Para preguntas sobre estos términos, escribinos a:</p>
+      <p><a href="mailto:namccolombia@gmail.com">namccolombia@gmail.com</a></p>
+    </section>
+  </article>
+
+  <footer>
+    <span>Salida Libre — Namc Colombia</span>
+    <span>Vigente desde el 23 de agosto de 2026</span>
+  </footer>
+</div>
+</body>
+</html>

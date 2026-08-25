@@ -54,6 +54,7 @@ ios/.build
 *.jks
 *.p12
 *.mobileprovision
+android/keystore.properties
 .env
 .env.local
 .env.*.local

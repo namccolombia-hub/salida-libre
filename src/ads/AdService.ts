@@ -3,7 +3,7 @@
 // dev server), so the web version keeps working exactly as before, with no
 // ads at all.
 import { Capacitor } from "@capacitor/core";
-import { AdMob } from "@capacitor-community/admob";
+import { AdMob, AdmobConsentStatus } from "@capacitor-community/admob";
 
 const isIOS = Capacitor.getPlatform() === "ios";
 
@@ -20,6 +20,36 @@ const INTERSTITIAL_AD_ID = isIOS ? "ca-app-pub-3940256099942544/4411468910" : "c
 const IS_TESTING = isIOS;
 
 let initialized = false;
+
+// EU/UK users must be asked for consent (Google's UMP flow) before any ad
+// request; everyone else gets AdmobConsentStatus.NOT_REQUIRED immediately.
+// If the request itself fails (offline, etc.) we default to allowing ads —
+// the vast majority of installs are outside the EU/UK anyway.
+async function ensureConsent(): Promise<boolean> {
+  try {
+    const info = await AdMob.requestConsentInfo();
+    if (info.status === AdmobConsentStatus.REQUIRED && info.isConsentFormAvailable) {
+      const updated = await AdMob.showConsentForm();
+      return updated.canRequestAds;
+    }
+    return info.canRequestAds;
+  } catch {
+    return true;
+  }
+}
+
+// Re-opens the same Google consent form so a player can change their mind
+// later — required by AdMob policy to be reachable from somewhere other
+// than first launch. Wired to a Settings button; a no-op outside the EU/UK
+// since the form simply won't have anything to show.
+export async function showPrivacyOptions(): Promise<void> {
+  if (!Capacitor.isNativePlatform()) return;
+  try {
+    await AdMob.showPrivacyOptionsForm();
+  } catch {
+    // Nothing to show (NOT_REQUIRED) or UMP not ready yet — fine either way.
+  }
+}
 
 async function prepareRewarded(): Promise<void> {
   try {
@@ -41,6 +71,8 @@ async function prepareInterstitial(): Promise<void> {
 export async function initAds(): Promise<void> {
   if (!Capacitor.isNativePlatform() || initialized) return;
   initialized = true;
+  const canRequestAds = await ensureConsent();
+  if (!canRequestAds) return; // EU/UK user declined — no ad requests at all.
   // Real ad requests are gated per-ad-unit by IS_TESTING above, not here —
   // initializeForTesting only registers specific test device ids, which we
   // don't need.
