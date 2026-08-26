@@ -57,6 +57,8 @@ export const es = {
     identifyLabel: "Cómo identificarlo",
     resolveLabel: "Cómo resolverlo",
     gotIt: "¡ENTENDIDO!",
+    next: "SIGUIENTE ›",
+    page: "{page}/{total}",
   },
   tutorial: {
     movement: {
@@ -145,6 +147,7 @@ export const es = {
     pieceCollected: "🔧 ¡Pieza recogida!",
     mistakeBanner: "😬 ¡Sálvalo! Si ganas, vuelve a la cuadrícula sin perder vida",
     deliveryBanner: "🔧 Busca la pieza de repuesto",
+    saved: "¡A salvo!",
   },
   gameOver: {
     wellDone: "¡BIEN HECHO!",

@@ -72,20 +72,22 @@ export const landmarkLabelKey: Record<LandmarkKey, "parkingLot" | "mall" | "casi
 // static "parking lot" shape baked into generated art can never line up
 // with it pixel-for-pixel. This flat color fills the whole scene (board and
 // surrounding field alike), guaranteeing there's never a visible seam
-// regardless of board size. Kept close in luminance to Palette.bgAsphalt
-// (0x1c1f26) so existing HUD text contrast isn't affected, just hue-shifted
-// per location.
+// regardless of board size. Bright enough to read as a real color per
+// location (real feedback: an earlier, darker pass plus a dark scrim on top
+// of it felt like an empty void) while staying dark enough for the existing
+// light-colored HUD text to stay legible — similar brightness to
+// Palette.bgAsphaltLight (0x262a33), hue-shifted per location.
 export const landmarkPavementTint: Record<LandmarkKey, number> = {
-  "parking-lot": 0x1c1f26,
-  mall: 0x241f33,
-  casino: 0x2a1a33,
-  "gas-station": 0x2a1a16,
-  supermarket: 0x1a2a1f,
-  hospital: 0x16232a,
-  "police-station": 0x161c2a,
-  park: 0x1a2a1a,
-  "fast-food": 0x2a1f16,
-  "car-wash": 0x16262a,
+  "parking-lot": 0x2a2f3a,
+  mall: 0x3d3352,
+  casino: 0x452c54,
+  "gas-station": 0x452c22,
+  supermarket: 0x2c4535,
+  hospital: 0x25384a,
+  "police-station": 0x232c45,
+  park: 0x2c4530,
+  "fast-food": 0x45351f,
+  "car-wash": 0x22404a,
 };
 
 // Bright accent color for the board's painted lot-boundary line (see

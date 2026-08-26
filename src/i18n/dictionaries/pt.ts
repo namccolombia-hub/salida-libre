@@ -54,6 +54,8 @@ export const pt: Dictionary = {
     identifyLabel: "Como identificar",
     resolveLabel: "Como resolver",
     gotIt: "ENTENDI!",
+    next: "PRÓXIMO ›",
+    page: "{page}/{total}",
   },
   tutorial: {
     movement: {
@@ -142,6 +144,7 @@ export const pt: Dictionary = {
     pieceCollected: "🔧 Peça coletada!",
     mistakeBanner: "😬 Salve-o! Se vencer, ele volta para a grade sem perder vida",
     deliveryBanner: "🔧 Busque a peça de reposição",
+    saved: "Salvo!",
   },
   gameOver: {
     wellDone: "MUITO BEM!",

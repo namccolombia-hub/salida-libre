@@ -221,13 +221,15 @@ export class ParkingScene extends Phaser.Scene {
     this.pavementTint = landmarkPavementTint[key];
     this.add.rectangle(0, 0, GameConfig.width, GameConfig.height, this.pavementTint, 1).setOrigin(0).setDepth(-2);
 
-    // A constant dark scrim, not just a night-only one — every HUD/text
-    // color in this scene was chosen assuming the old flat near-black
-    // background, so location art can only ever show through faintly
-    // (enough to read as "you're at the hospital now", never enough to
-    // fight the HUD for contrast).
-    const scrimAlpha = this.isNight ? 0.78 : 0.62;
-    this.add.rectangle(0, 0, GameConfig.width, GameConfig.height, 0x0b0d12, scrimAlpha).setOrigin(0).setDepth(-1);
+    // Night-only, and much lighter than before — this used to be a heavy
+    // scrim applied at all times (needed to tame unpredictable generated
+    // art that no longer exists), which was stacking with an already-dark
+    // tint and reading as a near-black void. Now it's just a subtle mood
+    // dimmer so the street-lamp glow still has a darker night backdrop to
+    // pop against; daytime shows the tint at full, undimmed brightness.
+    if (this.isNight) {
+      this.add.rectangle(0, 0, GameConfig.width, GameConfig.height, 0x0b0d12, 0.32).setOrigin(0).setDepth(-1);
+    }
   }
 
   // Draws the board's own themed frame — a painted lot-boundary line in the
@@ -267,19 +269,28 @@ export class ParkingScene extends Phaser.Scene {
       g.fillRect(this.offsetX - tickLength / 2, y - 1.5, tickLength, 3);
       g.fillRect(this.offsetX + gridW - tickLength / 2, y - 1.5, tickLength, 3);
     }
-    this.frameGraphics = g;
-
     // The small level-select landmark icon, reused here as a "sign" for
     // this board — real art already exists for all 10 locations, so this
-    // works with zero new assets. Sits just inside the board's top edge
-    // (there's no room above it without colliding with the level counter
-    // text) — depth puts it above the frame/pavement but below cars, so a
-    // car parked near the top just passes in front of it like a real sign.
+    // works with zero new assets. Sized up and given a dark medallion
+    // backdrop with the accent-color ring (real feedback: the earlier
+    // small, plain version didn't read as "there's an actual image here").
+    // Sits just inside the board's top edge (there's no room above it
+    // without colliding with the level counter text) — depth puts the
+    // image above the frame/pavement but below cars, so a car parked near
+    // the top just passes in front of it like a real sign.
     const badgeKey = `landmark-${key}`;
+    const badgeCenterX = this.offsetX + gridW / 2;
+    const badgeCenterY = this.offsetY + 44;
     if (this.textures.exists(badgeKey)) {
-      const badgeSize = 32;
-      this.badgeSprite = this.add.image(this.offsetX + gridW / 2, this.offsetY + badgeSize / 2 + 2, badgeKey).setDisplaySize(badgeSize, badgeSize).setDepth(4);
+      g.fillStyle(0x14161c, 0.85);
+      g.fillCircle(badgeCenterX, badgeCenterY, 32);
+      g.lineStyle(3, accent, 1);
+      g.strokeCircle(badgeCenterX, badgeCenterY, 32);
+
+      const badgeSize = 52;
+      this.badgeSprite = this.add.image(badgeCenterX, badgeCenterY, badgeKey).setDisplaySize(badgeSize, badgeSize).setDepth(4);
     }
+    this.frameGraphics = g;
   }
 
   private drawGrid(): void {
@@ -437,17 +448,22 @@ export class ParkingScene extends Phaser.Scene {
     }
   }
 
+  // Bigger + outlined than the old 12px pill — was easy to lose against
+  // busy car colors and pavement, especially on a phone screen (real
+  // feedback from testing on-device, not just in the browser).
   private addBrokenBadge(car: CarInstance, sprite: Phaser.GameObjects.Image): void {
     const badge = this.add
       .text(sprite.x, sprite.y - sprite.displayHeight / 2 - 4, `🔧 ${car.partsHave}/${car.partsNeeded}`, {
         fontFamily: Palette.displayFont,
-        fontSize: "12px",
+        fontSize: "16px",
         color: "#1c1f26",
         backgroundColor: "#ffb454",
-        padding: { x: 4, y: 2 },
+        padding: { x: 7, y: 4 },
+        stroke: "#1c1f26",
+        strokeThickness: 1.5,
       })
       .setOrigin(0.5, 1)
-      .setDepth(6);
+      .setDepth(7);
     this.badgeTexts.push(badge);
   }
 
@@ -455,13 +471,15 @@ export class ParkingScene extends Phaser.Scene {
     const badge = this.add
       .text(sprite.x, sprite.y - sprite.displayHeight / 2 - 4, `👑 ${car.vipTapsLeft}`, {
         fontFamily: Palette.displayFont,
-        fontSize: "12px",
+        fontSize: "16px",
         color: "#1c1f26",
         backgroundColor: "#4fd1ff",
-        padding: { x: 4, y: 2 },
+        padding: { x: 7, y: 4 },
+        stroke: "#1c1f26",
+        strokeThickness: 1.5,
       })
       .setOrigin(0.5, 1)
-      .setDepth(6);
+      .setDepth(7);
     this.badgeTexts.push(badge);
   }
 

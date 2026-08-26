@@ -431,7 +431,7 @@ export class ChaseScene extends Phaser.Scene {
     }
 
     this.drawParallax(delta);
-    this.drawRoad();
+    this.drawRoad(progress);
     this.drawRain();
     this.updateObstacles(delta, progress);
     this.drawTimeBar(progress);
@@ -441,7 +441,7 @@ export class ChaseScene extends Phaser.Scene {
     }
   }
 
-  private drawRoad(): void {
+  private drawRoad(progress: number): void {
     this.roadGraphics.clear();
 
     const farLeft = this.project(-1, 1);
@@ -457,6 +457,8 @@ export class ChaseScene extends Phaser.Scene {
     this.roadGraphics.lineTo(nearLeft.x, nearLeft.y);
     this.roadGraphics.closePath();
     this.roadGraphics.fillPath();
+
+    this.drawFinishLine(progress);
 
     // Dashed dividers between adjacent lane centers, so 3 lanes actually read as 3 lanes.
     const dividerXs = [
@@ -480,6 +482,25 @@ export class ChaseScene extends Phaser.Scene {
     this.roadGraphics.lineStyle(3, Palette.wallSolid, 1);
     this.roadGraphics.lineBetween(farLeft.x, farLeft.y, nearLeft.x, nearLeft.y);
     this.roadGraphics.lineBetween(farRight.x, farRight.y, nearRight.x, nearRight.y);
+  }
+
+  // A checkered finish line the player can watch approach across the whole
+  // chase, using the exact same projection as obstacles so it always lands
+  // at the collision point right when the chase actually ends — this was
+  // the fix for "winning feels like crashing": before this there was no way
+  // to see the end coming, only a thin 14px bar at the very top of the
+  // screen, easy to miss while watching the road for obstacles.
+  private drawFinishLine(progress: number): void {
+    const z = this.collisionZ + (1 - progress) * (1 - this.collisionZ);
+    const left = this.project(-1, z);
+    const right = this.project(1, z);
+    const bandHeight = 5 + left.scale * 16;
+    const squareCount = 10;
+    const squareW = (right.x - left.x) / squareCount;
+    for (let i = 0; i < squareCount; i++) {
+      this.roadGraphics.fillStyle(i % 2 === 0 ? 0x14161c : 0xf4f4f4, 1);
+      this.roadGraphics.fillRect(left.x + i * squareW, left.y - bandHeight / 2, squareW, bandHeight);
+    }
   }
 
   private spawnObstacle(progress: number): void {
@@ -728,6 +749,7 @@ export class ChaseScene extends Phaser.Scene {
       }
       LevelState.replenish();
       hapticSuccess();
+      showFloatingText(this, GameConfig.width / 2, GameConfig.height / 2 - 60, strings().chase.saved, Palette.textGold);
       this.cameras.main.flash(200, 79, 209, 255);
       this.time.delayedCall(220, () => goTo(this, "ParkingScene"));
     } else if (success) {

@@ -54,6 +54,8 @@ export const en: Dictionary = {
     identifyLabel: "How to spot it",
     resolveLabel: "How to handle it",
     gotIt: "GOT IT!",
+    next: "NEXT ›",
+    page: "{page}/{total}",
   },
   tutorial: {
     movement: {
@@ -142,6 +144,7 @@ export const en: Dictionary = {
     pieceCollected: "🔧 Part collected!",
     mistakeBanner: "😬 Save it! Win and it returns to the grid with no life lost",
     deliveryBanner: "🔧 Find the spare part",
+    saved: "Saved!",
   },
   gameOver: {
     wellDone: "WELL DONE!",
