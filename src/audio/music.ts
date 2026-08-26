@@ -27,6 +27,14 @@ function fade(sound: Phaser.Sound.WebAudioSound, from: number, to: number, ms: n
   const stepMs = ms / steps;
   let i = 0;
   const id = setInterval(() => {
+    // A sound can be destroyed out from under a fade already in flight —
+    // e.g. two mood changes close enough together that this one's target
+    // sound gets torn down by something else first. destroy() nulls out
+    // BaseSound's internals, so setVolume() after that throws.
+    if (sound.pendingRemove) {
+      clearInterval(id);
+      return;
+    }
     i++;
     sound.setVolume(Math.max(0, from + (to - from) * (i / steps)));
     if (i >= steps) {

@@ -3,6 +3,7 @@ import { CAR_COLOR_KEYS, GameConfig, startTheme, LANDMARK_KEYS } from "../config
 import { initAds } from "../ads/AdService.ts";
 import { initCloudSave } from "../cloud/CloudSave.ts";
 import { drawVerticalGradient } from "../fx/gradient.ts";
+import { TUTORIAL_ICONS } from "../ui/tutorialContent.ts";
 
 export class BootScene extends Phaser.Scene {
   constructor() {
@@ -27,6 +28,13 @@ export class BootScene extends Phaser.Scene {
 
     LANDMARK_KEYS.forEach((key) => {
       this.load.image(`landmark-${key}`, `/assets/landmarks/${key}.png`);
+    });
+
+    // Real gameplay screenshots for each tutorial mechanic — one per id,
+    // shown on the tutorial's first page so "how to spot it" isn't just
+    // text (real feedback: players wanted to see it, not just read about it).
+    (Object.keys(TUTORIAL_ICONS) as (keyof typeof TUTORIAL_ICONS)[]).forEach((id) => {
+      this.load.image(`tutorial-${id}`, `/assets/tutorial/${id}.png`);
     });
 
     // Music — CC-BY 3.0 tracks from OpenGameArt.org (see CREDITS.md).

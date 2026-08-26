@@ -30,22 +30,24 @@ function showNext(scene: Phaser.Scene, queue: TutorialId[], index: number, onAll
   showPage(scene, queue, index, 1, onAllDone);
 }
 
-// Split "identify" and "resolve" onto separate full screens instead of
-// stacking both (at tiny 13px text) onto one panel — real feedback was that
-// the old single-panel text was too small to read comfortably. Two pages at
-// a much bigger size is worth the extra tap.
-const TOTAL_PAGES = 2;
+// A real gameplay screenshot on its own page 1 (real feedback: players
+// wanted to see the mechanic, not just read about it), then "identify" and
+// "resolve" as separate pages — three screens total, up from the original
+// single cramped panel at 13px text.
+const TOTAL_PAGES = 3;
+type Page = 1 | 2 | 3;
 
-function showPage(scene: Phaser.Scene, queue: TutorialId[], index: number, page: 1 | 2, onAllDone: () => void): void {
+function showPage(scene: Phaser.Scene, queue: TutorialId[], index: number, page: Page, onAllDone: () => void): void {
   const id = queue[index];
   const entry = strings().tutorial[id];
   const centerX = GameConfig.width / 2;
   const centerY = GameConfig.height / 2;
   const panelWidth = 420;
+  const panelHeight = 700;
   const textWidth = panelWidth - 60;
 
   const overlay = scene.add.rectangle(0, 0, GameConfig.width, GameConfig.height, 0x000000, 0.75).setOrigin(0).setDepth(60);
-  const panel = scene.add.rectangle(centerX, centerY, panelWidth, 700, Palette.bgAsphaltLight, 1).setDepth(61);
+  const panel = scene.add.rectangle(centerX, centerY, panelWidth, panelHeight, Palette.bgAsphaltLight, 1).setDepth(61);
   panel.setStrokeStyle(2, Palette.wallSolid, 1);
 
   const layer: Phaser.GameObjects.GameObject[] = [overlay, panel];
@@ -66,7 +68,37 @@ function showPage(scene: Phaser.Scene, queue: TutorialId[], index: number, page:
   layer.push(title);
 
   const bodyY = centerY - 172;
-  if (page === 1) {
+  const screenshotKey = `tutorial-${id}`;
+  const hasScreenshot = scene.textures.exists(screenshotKey);
+  if (page === 1 && hasScreenshot) {
+    // Fit within a fixed box, preserving the screenshot's own aspect ratio
+    // (parking-board crops and chase-view crops are shaped very differently).
+    const maxW = textWidth;
+    const maxH = 420;
+    const src = scene.textures.get(screenshotKey).getSourceImage();
+    const aspect = src.width / src.height;
+    let w = maxW;
+    let h = w / aspect;
+    if (h > maxH) {
+      h = maxH;
+      w = h * aspect;
+    }
+    const frame = scene.add.rectangle(centerX, bodyY + h / 2, w + 4, h + 4).setStrokeStyle(2, Palette.wallSolid, 1).setDepth(62);
+    const shot = scene.add.image(centerX, bodyY, screenshotKey).setOrigin(0.5, 0).setDisplaySize(w, h).setDepth(62);
+    const caption = scene.add
+      .text(centerX, bodyY + h + 14, strings().tutorialUi.screenshotCaption, {
+        fontFamily: Palette.bodyFont,
+        fontSize: "13px",
+        color: "#8a909c",
+        align: "center",
+      })
+      .setOrigin(0.5, 0)
+      .setDepth(62);
+    layer.push(frame, shot, caption);
+  } else if (page === 1 || page === 2) {
+    // Falls back to the "identify" text if a screenshot is missing for this
+    // id (e.g. a newly added tutorial before its screenshot is captured),
+    // so a page never renders blank.
     const label = scene.add
       .text(centerX, bodyY, strings().tutorialUi.identifyLabel, {
         fontFamily: Palette.bodyFontBold,
@@ -135,7 +167,7 @@ function showPage(scene: Phaser.Scene, queue: TutorialId[], index: number, page:
       saveSeenTutorial(id);
       showNext(scene, queue, index + 1, onAllDone);
     } else {
-      showPage(scene, queue, index, 2, onAllDone);
+      showPage(scene, queue, index, (page + 1) as Page, onAllDone);
     }
   });
 }

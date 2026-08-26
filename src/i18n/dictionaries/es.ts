@@ -59,6 +59,7 @@ export const es = {
     gotIt: "¡ENTENDIDO!",
     next: "SIGUIENTE ›",
     page: "{page}/{total}",
+    screenshotCaption: "Así se ve en el juego",
   },
   tutorial: {
     movement: {

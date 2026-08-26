@@ -56,6 +56,7 @@ export const pt: Dictionary = {
     gotIt: "ENTENDI!",
     next: "PRÓXIMO ›",
     page: "{page}/{total}",
+    screenshotCaption: "É assim que aparece no jogo",
   },
   tutorial: {
     movement: {
