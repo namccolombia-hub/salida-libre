@@ -30,9 +30,14 @@ if (Test-Path $keystorePath) {
 }
 
 function New-RandomPassword {
+    # RandomNumberGenerator.Fill() needs a newer .NET than Windows
+    # PowerShell 5.1 ships with - RNGCryptoServiceProvider.GetBytes() is the
+    # equivalent that's been around since .NET Framework 1.1.
     $bytes = New-Object byte[] 24
-    [System.Security.Cryptography.RandomNumberGenerator]::Fill($bytes)
-    return [Convert]::ToBase64String($bytes) -replace '[+/=]', '' | ForEach-Object { $_.Substring(0, 24) }
+    $rng = New-Object System.Security.Cryptography.RNGCryptoServiceProvider
+    $rng.GetBytes($bytes)
+    $encoded = [Convert]::ToBase64String($bytes) -replace '[+/=]', ''
+    return $encoded.Substring(0, [Math]::Min(24, $encoded.Length))
 }
 
 $storePassword = New-RandomPassword
