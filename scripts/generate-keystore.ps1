@@ -2,7 +2,7 @@
 # Run this yourself from PowerShell, in the project root (e:\Wrong Exit):
 #   .\scripts\generate-keystore.ps1
 #
-# The keystore file and its passwords never leave your machine — this
+# The keystore file and its passwords never leave your machine - this
 # script doesn't call out to anything. It writes:
 #   - android/app/salida-libre-upload.keystore   (the key itself, gitignored)
 #   - android/keystore.properties                (passwords, gitignored)
@@ -17,7 +17,7 @@ $ErrorActionPreference = "Stop"
 
 $keytool = "C:\Program Files\Android\Android Studio\jbr\bin\keytool.exe"
 if (-not (Test-Path $keytool)) {
-    Write-Error "keytool.exe not found at $keytool — edit this script if Android Studio is installed elsewhere."
+    Write-Error "keytool.exe not found at $keytool - edit this script if Android Studio is installed elsewhere."
     exit 1
 }
 
@@ -25,7 +25,7 @@ $keystorePath = Join-Path $PSScriptRoot "..\android\app\salida-libre-upload.keys
 $propsPath = Join-Path $PSScriptRoot "..\android\keystore.properties"
 
 if (Test-Path $keystorePath) {
-    Write-Error "A keystore already exists at $keystorePath — delete it first if you really want to regenerate (this would invalidate the old one)."
+    Write-Error "A keystore already exists at $keystorePath - delete it first if you really want to regenerate (this would invalidate the old one)."
     exit 1
 }
 
@@ -48,7 +48,7 @@ $alias = "salida-libre-upload"
     -dname "CN=Sebastian Serrano, OU=Namc Colombia, O=Namc Colombia, L=Colombia, ST=Colombia, C=CO"
 
 if ($LASTEXITCODE -ne 0) {
-    Write-Error "keytool failed — see output above."
+    Write-Error "keytool failed - see output above."
     exit 1
 }
 
