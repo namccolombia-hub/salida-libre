@@ -484,14 +484,19 @@ export class ChaseScene extends Phaser.Scene {
     this.roadGraphics.lineBetween(farRight.x, farRight.y, nearRight.x, nearRight.y);
   }
 
-  // A checkered finish line the player can watch approach across the whole
-  // chase, using the exact same projection as obstacles so it always lands
-  // at the collision point right when the chase actually ends — this was
-  // the fix for "winning feels like crashing": before this there was no way
-  // to see the end coming, only a thin 14px bar at the very top of the
-  // screen, easy to miss while watching the road for obstacles.
+  // Only visible once the chase is mostly over — appearing at the horizon
+  // for the entire run read as clutter (real feedback), and doesn't match
+  // how an actual finish line would only become visible once you're within
+  // sight of it. Still uses the exact same projection as obstacles, so it
+  // always lands at the collision point right when the chase actually ends
+  // — that was the fix for "winning feels like crashing": no way to see the
+  // end coming, only a thin 14px bar at the very top of the screen.
+  private static readonly FINISH_LINE_VISIBLE_FROM = 0.6;
+
   private drawFinishLine(progress: number): void {
-    const z = this.collisionZ + (1 - progress) * (1 - this.collisionZ);
+    if (progress < ChaseScene.FINISH_LINE_VISIBLE_FROM) return;
+    const visibleProgress = (progress - ChaseScene.FINISH_LINE_VISIBLE_FROM) / (1 - ChaseScene.FINISH_LINE_VISIBLE_FROM);
+    const z = this.collisionZ + (1 - visibleProgress) * (1 - this.collisionZ);
     const left = this.project(-1, z);
     const right = this.project(1, z);
     const bandHeight = 5 + left.scale * 16;

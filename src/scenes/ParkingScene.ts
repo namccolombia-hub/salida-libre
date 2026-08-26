@@ -271,24 +271,47 @@ export class ParkingScene extends Phaser.Scene {
     }
     // The small level-select landmark icon, reused here as a "sign" for
     // this board — real art already exists for all 10 locations, so this
-    // works with zero new assets. Sized up and given a dark medallion
-    // backdrop with the accent-color ring (real feedback: the earlier
-    // small, plain version didn't read as "there's an actual image here").
-    // Sits just inside the board's top edge (there's no room above it
-    // without colliding with the level counter text) — depth puts the
-    // image above the frame/pavement but below cars, so a car parked near
-    // the top just passes in front of it like a real sign.
+    // works with zero new assets. Used to sit inside the board's top edge,
+    // but real feedback was that it read as another car/bus in the grid and
+    // caused mix-ups mid-puzzle — it now only ever renders in whichever
+    // margin outside the grid has the most room (left/right of it, or below
+    // it), sized to fit that space, and is skipped entirely on a level
+    // where the board leaves no usable margin anywhere. Never overlaps the
+    // grid, by construction.
     const badgeKey = `landmark-${key}`;
-    const badgeCenterX = this.offsetX + gridW / 2;
-    const badgeCenterY = this.offsetY + 44;
     if (this.textures.exists(badgeKey)) {
-      g.fillStyle(0x14161c, 0.85);
-      g.fillCircle(badgeCenterX, badgeCenterY, 32);
-      g.lineStyle(3, accent, 1);
-      g.strokeCircle(badgeCenterX, badgeCenterY, 32);
+      const pad = 10;
+      const minBadge = 26;
+      const maxBadge = 64;
+      const leftSpace = this.offsetX - pad * 2;
+      const rightSpace = GameConfig.width - (this.offsetX + gridW) - pad * 2;
+      const bottomSpace = GameConfig.height - (this.offsetY + gridH) - this.bottomMargin - pad * 2;
 
-      const badgeSize = 52;
-      this.badgeSprite = this.add.image(badgeCenterX, badgeCenterY, badgeKey).setDisplaySize(badgeSize, badgeSize).setDepth(4);
+      let badgeSize = 0;
+      let badgeCenterX = 0;
+      let badgeCenterY = 0;
+      if (leftSpace >= rightSpace && leftSpace >= bottomSpace) {
+        badgeSize = Math.min(maxBadge, leftSpace);
+        badgeCenterX = this.offsetX - pad - badgeSize / 2;
+        badgeCenterY = this.offsetY + gridH / 2;
+      } else if (rightSpace >= bottomSpace) {
+        badgeSize = Math.min(maxBadge, rightSpace);
+        badgeCenterX = this.offsetX + gridW + pad + badgeSize / 2;
+        badgeCenterY = this.offsetY + gridH / 2;
+      } else {
+        badgeSize = Math.min(maxBadge, bottomSpace);
+        badgeCenterX = this.offsetX + gridW / 2;
+        badgeCenterY = this.offsetY + gridH + pad + badgeSize / 2;
+      }
+
+      if (badgeSize >= minBadge) {
+        const ringRadius = badgeSize / 2 + 6;
+        g.fillStyle(0x14161c, 0.85);
+        g.fillCircle(badgeCenterX, badgeCenterY, ringRadius);
+        g.lineStyle(3, accent, 1);
+        g.strokeCircle(badgeCenterX, badgeCenterY, ringRadius);
+        this.badgeSprite = this.add.image(badgeCenterX, badgeCenterY, badgeKey).setDisplaySize(badgeSize, badgeSize).setDepth(4);
+      }
     }
     this.frameGraphics = g;
   }
